@@ -10,24 +10,25 @@ using NHospital.Models;
 
 namespace NHospital.Controllers
 {
-    public class HabitacionsController : Controller
+    public class HabitacionController : Controller
     {
-        private Mantenimiento db = new Mantenimiento();
+        private Models.NHospital db = new Models.NHospital();
 
-        // GET: Habitaciones
+        // GET: Habitacion
         public ActionResult Index()
         {
-            return View(db.Habitaciones.ToList());
+            var habitacions = db.Habitacions.Include(h => h.TipoHabitacion);
+            return View(habitacions.ToList());
         }
 
-        // GET: Habitaciones/Details/5
+        // GET: Habitacion/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Habitacion habitacion = db.Habitaciones.Find(id);
+            Habitacion habitacion = db.Habitacions.Find(id);
             if (habitacion == null)
             {
                 return HttpNotFound();
@@ -35,50 +36,53 @@ namespace NHospital.Controllers
             return View(habitacion);
         }
 
-        // GET: Habitaciones/Create
+        // GET: Habitacion/Create
         public ActionResult Create()
         {
+            ViewBag.IdTipo = new SelectList(db.TipoHabitacions, "IdTipo", "Nombre");
             return View();
         }
 
-        // POST: Habitaciones/Create
+        // POST: Habitacion/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IdHabitacion,Numero,Tipo,Precio")] Habitacion habitacion)
+        public ActionResult Create([Bind(Include = "IdHabitacion,Numero,IdTipo,Precio")] Habitacion habitacion)
         {
             if (ModelState.IsValid)
             {
-                db.Habitaciones.Add(habitacion);
+                db.Habitacions.Add(habitacion);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
+            ViewBag.IdTipo = new SelectList(db.TipoHabitacions, "IdTipo", "Nombre", habitacion.IdTipo);
             return View(habitacion);
         }
 
-        // GET: Habitaciones/Edit/5
+        // GET: Habitacion/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Habitacion habitacion = db.Habitaciones.Find(id);
+            Habitacion habitacion = db.Habitacions.Find(id);
             if (habitacion == null)
             {
                 return HttpNotFound();
             }
+            ViewBag.IdTipo = new SelectList(db.TipoHabitacions, "IdTipo", "Nombre", habitacion.IdTipo);
             return View(habitacion);
         }
 
-        // POST: Habitaciones/Edit/5
+        // POST: Habitacion/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IdHabitacion,Numero,Tipo,Precio")] Habitacion habitacion)
+        public ActionResult Edit([Bind(Include = "IdHabitacion,Numero,IdTipo,Precio")] Habitacion habitacion)
         {
             if (ModelState.IsValid)
             {
@@ -86,17 +90,18 @@ namespace NHospital.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.IdTipo = new SelectList(db.TipoHabitacions, "IdTipo", "Nombre", habitacion.IdTipo);
             return View(habitacion);
         }
 
-        // GET: Habitaciones/Delete/5
+        // GET: Habitacion/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Habitacion habitacion = db.Habitaciones.Find(id);
+            Habitacion habitacion = db.Habitacions.Find(id);
             if (habitacion == null)
             {
                 return HttpNotFound();
@@ -104,13 +109,13 @@ namespace NHospital.Controllers
             return View(habitacion);
         }
 
-        // POST: Habitaciones/Delete/5
+        // POST: Habitacion/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Habitacion habitacion = db.Habitaciones.Find(id);
-            db.Habitaciones.Remove(habitacion);
+            Habitacion habitacion = db.Habitacions.Find(id);
+            db.Habitacions.Remove(habitacion);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

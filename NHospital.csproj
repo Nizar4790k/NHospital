@@ -128,17 +128,19 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\HabitacionsController.cs" />
+    <Compile Include="Controllers\HabitacionController.cs" />
+    <Compile Include="Models\Alta.cs" />
+    <Compile Include="Models\Cita.cs" />
+    <Compile Include="Models\Habitacion.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\MedicoController.cs" />
-    <Compile Include="Controllers\PacienteController.cs" />
+    <Compile Include="Models\Ingreso.cs" />
+    <Compile Include="Models\Medico.cs" />
+    <Compile Include="Models\NHospital.cs" />
+    <Compile Include="Models\Paciente.cs" />
+    <Compile Include="Models\TipoHabitacion.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Habitacion.cs" />
-    <Compile Include="Models\Mantenimiento.cs" />
-    <Compile Include="Models\Medico.cs" />
-    <Compile Include="Models\Paciente.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -177,21 +179,11 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Medico\Create.cshtml" />
-    <Content Include="Views\Medico\Delete.cshtml" />
-    <Content Include="Views\Medico\Details.cshtml" />
-    <Content Include="Views\Medico\Edit.cshtml" />
-    <Content Include="Views\Medico\Index.cshtml" />
-    <Content Include="Views\Paciente\Create.cshtml" />
-    <Content Include="Views\Paciente\Delete.cshtml" />
-    <Content Include="Views\Paciente\Details.cshtml" />
-    <Content Include="Views\Paciente\Edit.cshtml" />
-    <Content Include="Views\Paciente\Index.cshtml" />
-    <Content Include="Views\Habitacions\Create.cshtml" />
-    <Content Include="Views\Habitacions\Delete.cshtml" />
-    <Content Include="Views\Habitacions\Details.cshtml" />
-    <Content Include="Views\Habitacions\Edit.cshtml" />
-    <Content Include="Views\Habitacions\Index.cshtml" />
+    <Content Include="Views\Habitacion\Create.cshtml" />
+    <Content Include="Views\Habitacion\Delete.cshtml" />
+    <Content Include="Views\Habitacion\Details.cshtml" />
+    <Content Include="Views\Habitacion\Edit.cshtml" />
+    <Content Include="Views\Habitacion\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
