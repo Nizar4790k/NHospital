@@ -128,7 +128,12 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AltaController.cs" />
+    <Compile Include="Controllers\CitaController.cs" />
     <Compile Include="Controllers\HabitacionController.cs" />
+    <Compile Include="Controllers\IngresoController.cs" />
+    <Compile Include="Controllers\MedicoController.cs" />
+    <Compile Include="Controllers\PacienteController.cs" />
     <Compile Include="Models\Alta.cs" />
     <Compile Include="Models\Cita.cs" />
     <Compile Include="Models\Habitacion.cs" />
@@ -184,6 +189,31 @@
     <Content Include="Views\Habitacion\Details.cshtml" />
     <Content Include="Views\Habitacion\Edit.cshtml" />
     <Content Include="Views\Habitacion\Index.cshtml" />
+    <Content Include="Views\Medico\Create.cshtml" />
+    <Content Include="Views\Medico\Delete.cshtml" />
+    <Content Include="Views\Medico\Details.cshtml" />
+    <Content Include="Views\Medico\Edit.cshtml" />
+    <Content Include="Views\Medico\Index.cshtml" />
+    <Content Include="Views\Paciente\Create.cshtml" />
+    <Content Include="Views\Paciente\Delete.cshtml" />
+    <Content Include="Views\Paciente\Details.cshtml" />
+    <Content Include="Views\Paciente\Edit.cshtml" />
+    <Content Include="Views\Paciente\Index.cshtml" />
+    <Content Include="Views\Cita\Create.cshtml" />
+    <Content Include="Views\Cita\Delete.cshtml" />
+    <Content Include="Views\Cita\Details.cshtml" />
+    <Content Include="Views\Cita\Edit.cshtml" />
+    <Content Include="Views\Cita\Index.cshtml" />
+    <Content Include="Views\Ingreso\Create.cshtml" />
+    <Content Include="Views\Ingreso\Delete.cshtml" />
+    <Content Include="Views\Ingreso\Details.cshtml" />
+    <Content Include="Views\Ingreso\Edit.cshtml" />
+    <Content Include="Views\Ingreso\Index.cshtml" />
+    <Content Include="Views\Alta\Create.cshtml" />
+    <Content Include="Views\Alta\Delete.cshtml" />
+    <Content Include="Views\Alta\Details.cshtml" />
+    <Content Include="Views\Alta\Edit.cshtml" />
+    <Content Include="Views\Alta\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
