@@ -79,3 +79,4 @@ D:\Documentos\Visual Studio Projects\NHospital\bin\Microsoft.CodeDom.Providers.D
 D:\Documentos\Visual Studio Projects\NHospital\obj\Debug\NHospital.csproj.CopyComplete
 D:\Documentos\Visual Studio Projects\NHospital\obj\Debug\NHospital.dll
 D:\Documentos\Visual Studio Projects\NHospital\obj\Debug\NHospital.pdb
+D:\Documentos\Visual Studio Projects\NHospital\obj\Debug\NHospital.csprojAssemblyReference.cache
