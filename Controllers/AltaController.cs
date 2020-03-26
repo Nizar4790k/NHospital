@@ -10,107 +10,112 @@ using NHospital.Models;
 
 namespace NHospital.Controllers
 {
-    public class MedicoController : Controller
+    public class AltaController : Controller
     {
         private Models.NHospital db = new Models.NHospital();
 
-        // GET: Medico
+        // GET: Alta
         public ActionResult Index()
         {
-            return View(db.Medicos.ToList());
+            var altas = db.Altas.Include(a => a.Ingreso);
+            return View(altas.ToList());
         }
 
-        // GET: Medico/Details/5
+        // GET: Alta/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Medico medico = db.Medicos.Find(id);
-            if (medico == null)
+            Alta alta = db.Altas.Find(id);
+            if (alta == null)
             {
                 return HttpNotFound();
             }
-            return View(medico);
+            return View(alta);
         }
 
-        // GET: Medico/Create
+        // GET: Alta/Create
         public ActionResult Create()
         {
+            ViewBag.IdIngreso = new SelectList(db.Ingresoes, "IdIngreso", "IdIngreso");
             return View();
         }
 
-        // POST: Medico/Create
+        // POST: Alta/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IdMedico,Nombre,Exequatur,Especialidad")] Medico medico)
+        public ActionResult Create([Bind(Include = "IdAlta,IdIngreso,FechaSalida,MontoTotal")] Alta alta)
         {
             if (ModelState.IsValid)
             {
-                db.Medicos.Add(medico);
+                db.Altas.Add(alta);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(medico);
+            ViewBag.IdIngreso = new SelectList(db.Ingresoes, "IdIngreso", "IdIngreso", alta.IdIngreso);
+            return View(alta);
         }
 
-        // GET: Medico/Edit/5
+        // GET: Alta/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Medico medico = db.Medicos.Find(id);
-            if (medico == null)
+            Alta alta = db.Altas.Find(id);
+            if (alta == null)
             {
                 return HttpNotFound();
             }
-            return View(medico);
+            ViewBag.IdIngreso = new SelectList(db.Ingresoes, "IdIngreso", "IdIngreso", alta.IdIngreso);
+            return View(alta);
         }
 
-        // POST: Medico/Edit/5
+        // POST: Alta/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IdMedico,Nombre,Exequatur,Especialidad")] Medico medico)
+        public ActionResult Edit([Bind(Include = "IdAlta,IdIngreso,FechaSalida,MontoTotal")] Alta alta)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(medico).State = EntityState.Modified;
+                db.Entry(alta).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(medico);
+            ViewBag.IdIngreso = new SelectList(db.Ingresoes, "IdIngreso", "IdIngreso", alta.IdIngreso);
+            return View(alta);
         }
 
-        // GET: Medico/Delete/5
+        // GET: Alta/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Medico medico = db.Medicos.Find(id);
-            if (medico == null)
+            Alta alta = db.Altas.Find(id);
+            if (alta == null)
             {
                 return HttpNotFound();
             }
-            return View(medico);
+            return View(alta);
         }
 
-        // POST: Medico/Delete/5
+        // POST: Alta/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Medico medico = db.Medicos.Find(id);
-            db.Medicos.Remove(medico);
+            Alta alta = db.Altas.Find(id);
+            db.Altas.Remove(alta);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
