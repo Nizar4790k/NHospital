@@ -12,7 +12,7 @@ namespace NHospital.Controllers
 {
     public class PacienteController : Controller
     {
-        private Mantenimiento db = new Mantenimiento();
+        private Models.NHospital db = new Models.NHospital();
 
         // GET: Paciente
         public ActionResult Index()

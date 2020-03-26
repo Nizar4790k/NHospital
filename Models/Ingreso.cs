@@ -6,29 +6,29 @@ namespace NHospital.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Habitacion")]
-    public partial class Habitacion
+    [Table("Ingreso")]
+    public partial class Ingreso
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Habitacion()
+        public Ingreso()
         {
-            Ingresoes = new HashSet<Ingreso>();
+            Altas = new HashSet<Alta>();
         }
 
         [Key]
+        public int IdIngreso { get; set; }
+
+        public DateTime FechaIngreso { get; set; }
+
         public int IdHabitacion { get; set; }
 
-        [Required]
-        [StringLength(8)]
-        public string Numero { get; set; }
-
-        public int IdTipo { get; set; }
-
-        public decimal Precio { get; set; }
-
-        public virtual TipoHabitacion TipoHabitacion { get; set; }
+        public int IdPaciente { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Ingreso> Ingresoes { get; set; }
+        public virtual ICollection<Alta> Altas { get; set; }
+
+        public virtual Habitacion Habitacion { get; set; }
+
+        public virtual Paciente Paciente { get; set; }
     }
 }
