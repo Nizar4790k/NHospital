@@ -46,10 +46,17 @@ namespace NHospital.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IdMedico,Nombre,Exequatur,Especialidad")] Medico medico)
+        public ActionResult Create([Bind(Include = "IdMedico,Nombre,Exequatur,Especialidad")] Medico medico,HttpPostedFileBase exequatur)
         {
-            if (ModelState.IsValid)
+
+
+
+          
+
+            if (ModelState.IsValid && exequatur!=null)
             {
+  
+                GuardarExecuatur(exequatur,medico);
                 db.Medicos.Add(medico);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -78,10 +85,11 @@ namespace NHospital.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IdMedico,Nombre,Exequatur,Especialidad")] Medico medico)
+        public ActionResult Edit([Bind(Include = "IdMedico,Nombre,Exequatur,Especialidad")] Medico medico, HttpPostedFileBase exequatur)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && exequatur!=null)
             {
+                GuardarExecuatur(exequatur, medico);
                 db.Entry(medico).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -123,5 +131,17 @@ namespace NHospital.Controllers
             }
             base.Dispose(disposing);
         }
+
+        private void GuardarExecuatur(HttpPostedFileBase file,Medico medico)
+        {
+         
+    
+           medico.Exequatur = "Exequatur" + Guid.NewGuid().ToString() + ".pdf";
+        
+           
+
+            file.SaveAs(Server.MapPath("/Exequatur/" + medico.Exequatur));
+        }
+
     }
 }

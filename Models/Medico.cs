@@ -22,6 +22,7 @@ namespace NHospital.Models
         public string Nombre { get; set; }
 
         [Required]
+      
         public string Exequatur { get; set; }
 
         [Required]
