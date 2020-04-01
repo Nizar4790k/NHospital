@@ -9,6 +9,9 @@ namespace NHospital.Models
     [Table("Habitacion")]
     public partial class Habitacion
     {
+
+         const int MAX = 2147483647;
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Habitacion()
         {
@@ -19,11 +22,16 @@ namespace NHospital.Models
         [Key]
         public int IdHabitacion { get; set; }
 
+        [Range(0, 2147483647, ErrorMessage ="Valor no valido")]
+        [Index(IsUnique = true)]
+        [Required(ErrorMessage ="El numero de habitacion es obligatorio")]
         public int Numero { get; set; }
 
-        [Index(IsUnique =true)]
+       
         public int IdTipo { get; set; }
 
+        [Range(0, 2147483647, ErrorMessage = "Valor no valido")]
+        [Required(ErrorMessage = "El precio de la habitacion es obligatorio")]
         public decimal Precio { get; set; }
 
         public virtual TipoHabitacion TipoHabitacion { get; set; }

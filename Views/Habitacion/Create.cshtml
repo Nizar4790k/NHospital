@@ -25,10 +25,12 @@
                 @Html.EditorFor(model => model.Numero, new { name = "Numero", htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Numero, "", new { @class = "text-danger" })
 
-                @if (@ViewBag.ErrorMessage.Equals("Habitacion Existente"))
+                @if (@ViewBag.HabitacionRepetida)
                 {
                     @Html.ValidationMessage("Numero", "La habitacion que intenta anadir ya existe", new { @class = "text-danger" });
                 }
+
+               
 
 
 

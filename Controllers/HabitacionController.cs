@@ -40,7 +40,10 @@ namespace NHospital.Controllers
         public ActionResult Create()
         {
             ViewBag.IdTipo = new SelectList(db.TipoHabitacion, "IdTipo", "Nombre");
-            ViewBag.ErrorMessage = "";
+
+            ViewBag.HabitacionRepetida = false;  // Condiciones para validacion
+        
+
             return View();
         }
 
@@ -53,6 +56,18 @@ namespace NHospital.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                if (habitacion.Numero < 1)
+                {
+                    ViewBag.NumeroEsMenorQueUno = true;
+                    ViewBag.IdTipo = new SelectList(db.TipoHabitacion, "IdTipo", "Nombre", habitacion.IdTipo);
+                    return View(habitacion);
+
+                }
+
+
+
+
                 db.Habitacion.Add(habitacion);
 
 
@@ -60,19 +75,20 @@ namespace NHospital.Controllers
                 {
                     db.SaveChanges();
                 }
-                catch(System.Data.Entity.Infrastructure.DbUpdateException ex)
+                catch (System.Data.Entity.Infrastructure.DbUpdateException ex)  // Validando que el numero de habitacion no sea el mismo
                 {
+
+                    ViewBag.HabitacionRepetida = true;
                     ViewBag.IdTipo = new SelectList(db.TipoHabitacion, "IdTipo", "Nombre", habitacion.IdTipo);
-                    ViewBag.ErrorMessage = "Habitacion Existente";
                     return View(habitacion);
 
                 }
-        
 
-                  
-                
-                
-                
+
+
+
+
+
                 return RedirectToAction("Index");
             }
 
@@ -83,6 +99,8 @@ namespace NHospital.Controllers
         // GET: Habitacion/Edit/5
         public ActionResult Edit(int? id)
         {
+            ViewBag.HabitacionRepetida = false;  // Condiciones para validacion
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -106,7 +124,21 @@ namespace NHospital.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(habitacion).State = EntityState.Modified;
-                db.SaveChanges();
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (System.Data.Entity.Infrastructure.DbUpdateException ex)  // Validando que el numero de habitacion no sea el mismo
+                {
+
+                    ViewBag.HabitacionRepetida = true;
+                    ViewBag.IdTipo = new SelectList(db.TipoHabitacion, "IdTipo", "Nombre", habitacion.IdTipo);
+                    return View(habitacion);
+
+                }
+
+
                 return RedirectToAction("Index");
             }
             ViewBag.IdTipo = new SelectList(db.TipoHabitacion, "IdTipo", "Nombre", habitacion.IdTipo);
@@ -147,5 +179,6 @@ namespace NHospital.Controllers
             }
             base.Dispose(disposing);
         }
+
     }
 }
