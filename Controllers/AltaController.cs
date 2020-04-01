@@ -17,7 +17,7 @@ namespace NHospital.Controllers
         // GET: Alta
         public ActionResult Index()
         {
-            var altas = db.Altas.Include(a => a.Ingreso);
+            var altas = db.Alta.Include(a => a.Ingreso);
             return View(altas.ToList());
         }
 
@@ -28,7 +28,7 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Alta alta = db.Altas.Find(id);
+            Alta alta = db.Alta.Find(id);
             if (alta == null)
             {
                 return HttpNotFound();
@@ -39,7 +39,7 @@ namespace NHospital.Controllers
         // GET: Alta/Create
         public ActionResult Create()
         {
-            ViewBag.IdIngreso = new SelectList(db.Ingresoes, "IdIngreso", "IdIngreso");
+            ViewBag.IdIngreso = new SelectList(db.Ingreso, "IdIngreso", "IdIngreso");
             return View();
         }
 
@@ -52,12 +52,12 @@ namespace NHospital.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Altas.Add(alta);
+                db.Alta.Add(alta);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.IdIngreso = new SelectList(db.Ingresoes, "IdIngreso", "IdIngreso", alta.IdIngreso);
+            ViewBag.IdIngreso = new SelectList(db.Ingreso, "IdIngreso", "IdIngreso", alta.IdIngreso);
             return View(alta);
         }
 
@@ -68,12 +68,12 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Alta alta = db.Altas.Find(id);
+            Alta alta = db.Alta.Find(id);
             if (alta == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.IdIngreso = new SelectList(db.Ingresoes, "IdIngreso", "IdIngreso", alta.IdIngreso);
+            ViewBag.IdIngreso = new SelectList(db.Ingreso, "IdIngreso", "IdIngreso", alta.IdIngreso);
             return View(alta);
         }
 
@@ -90,7 +90,7 @@ namespace NHospital.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.IdIngreso = new SelectList(db.Ingresoes, "IdIngreso", "IdIngreso", alta.IdIngreso);
+            ViewBag.IdIngreso = new SelectList(db.Ingreso, "IdIngreso", "IdIngreso", alta.IdIngreso);
             return View(alta);
         }
 
@@ -101,7 +101,7 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Alta alta = db.Altas.Find(id);
+            Alta alta = db.Alta.Find(id);
             if (alta == null)
             {
                 return HttpNotFound();
@@ -114,8 +114,8 @@ namespace NHospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Alta alta = db.Altas.Find(id);
-            db.Altas.Remove(alta);
+            Alta alta = db.Alta.Find(id);
+            db.Alta.Remove(alta);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

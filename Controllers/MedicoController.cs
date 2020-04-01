@@ -17,7 +17,7 @@ namespace NHospital.Controllers
         // GET: Medico
         public ActionResult Index()
         {
-            return View(db.Medicos.ToList());
+            return View(db.Medico.ToList());
         }
 
         // GET: Medico/Details/5
@@ -27,7 +27,7 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Medico medico = db.Medicos.Find(id);
+            Medico medico = db.Medico.Find(id);
             if (medico == null)
             {
                 return HttpNotFound();
@@ -57,7 +57,7 @@ namespace NHospital.Controllers
             {
   
                 GuardarExecuatur(exequatur,medico);
-                db.Medicos.Add(medico);
+                db.Medico.Add(medico);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -72,7 +72,7 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Medico medico = db.Medicos.Find(id);
+            Medico medico = db.Medico.Find(id);
             if (medico == null)
             {
                 return HttpNotFound();
@@ -104,7 +104,7 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Medico medico = db.Medicos.Find(id);
+            Medico medico = db.Medico.Find(id);
             if (medico == null)
             {
                 return HttpNotFound();
@@ -117,8 +117,8 @@ namespace NHospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Medico medico = db.Medicos.Find(id);
-            db.Medicos.Remove(medico);
+            Medico medico = db.Medico.Find(id);
+            db.Medico.Remove(medico);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

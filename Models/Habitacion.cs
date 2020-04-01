@@ -12,16 +12,16 @@ namespace NHospital.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Habitacion()
         {
-            Ingresoes = new HashSet<Ingreso>();
+            Ingreso = new HashSet<Ingreso>();
+
         }
 
         [Key]
         public int IdHabitacion { get; set; }
 
-        [Required]
-        [StringLength(8)]
-        public string Numero { get; set; }
+        public int Numero { get; set; }
 
+        [Index(IsUnique =true)]
         public int IdTipo { get; set; }
 
         public decimal Precio { get; set; }
@@ -29,6 +29,6 @@ namespace NHospital.Models
         public virtual TipoHabitacion TipoHabitacion { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Ingreso> Ingresoes { get; set; }
+        public virtual ICollection<Ingreso> Ingreso { get; set; }
     }
 }

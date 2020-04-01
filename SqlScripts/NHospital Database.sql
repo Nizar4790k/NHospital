@@ -29,7 +29,7 @@ Asegurado bit NOT NULL
 
 CREATE TABLE Habitacion(
 IdHabitacion int primary key identity(1,1) NOT NULL,
-Numero varchar(8) NOT NULL,
+Numero int UNIQUE NOT NULL ,
 IdTipo int FOREIGN KEY REFERENCES TipoHabitacion(IdTipo) NOT NULL,
 Precio decimal(10,4) NOT NULL
 
@@ -55,7 +55,7 @@ IdPaciente int FOREIGN KEY REFERENCES Paciente(IdPaciente) NOT NULL
 );
 
 CREATE TABLE Alta(
-IdIngreso int FOREIGN KEY REFERENCES Ingreso(IdIngreso) NOT NULL,
+IdIngreso int FOREIGN KEY REFERENCES Ingreso(IdIngreso) UNIQUE  NOT NULL,
 IdAlta int primary key identity(1,1) NOT NULL,
 FechaSalida datetime NOT NULL ,
 MontoTotal decimal(10,4) NOT NULL
@@ -69,6 +69,12 @@ INSERT INTO TipoHabitacion (Nombre) VALUES ('Privada');
 INSERT INTO TipoHabitacion (Nombre) VALUES ('Suite');
 
 SELECT * FROM TipoHabitacion;
+
+
+
+DROP TABLE Alta;
+DROP TABLE Ingreso;
+DROP TABLE Habitacion;
 
 
 

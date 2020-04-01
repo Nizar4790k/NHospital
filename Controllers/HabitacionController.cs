@@ -17,7 +17,7 @@ namespace NHospital.Controllers
         // GET: Habitacion
         public ActionResult Index()
         {
-            var habitacions = db.Habitacions.Include(h => h.TipoHabitacion);
+            var habitacions = db.Habitacion.Include(h => h.TipoHabitacion);
             return View(habitacions.ToList());
         }
 
@@ -28,7 +28,7 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Habitacion habitacion = db.Habitacions.Find(id);
+            Habitacion habitacion = db.Habitacion.Find(id);
             if (habitacion == null)
             {
                 return HttpNotFound();
@@ -39,7 +39,8 @@ namespace NHospital.Controllers
         // GET: Habitacion/Create
         public ActionResult Create()
         {
-            ViewBag.IdTipo = new SelectList(db.TipoHabitacions, "IdTipo", "Nombre");
+            ViewBag.IdTipo = new SelectList(db.TipoHabitacion, "IdTipo", "Nombre");
+            ViewBag.ErrorMessage = "";
             return View();
         }
 
@@ -52,12 +53,30 @@ namespace NHospital.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Habitacions.Add(habitacion);
-                db.SaveChanges();
+                db.Habitacion.Add(habitacion);
+
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch(System.Data.Entity.Infrastructure.DbUpdateException ex)
+                {
+                    ViewBag.IdTipo = new SelectList(db.TipoHabitacion, "IdTipo", "Nombre", habitacion.IdTipo);
+                    ViewBag.ErrorMessage = "Habitacion Existente";
+                    return View(habitacion);
+
+                }
+        
+
+                  
+                
+                
+                
                 return RedirectToAction("Index");
             }
 
-            ViewBag.IdTipo = new SelectList(db.TipoHabitacions, "IdTipo", "Nombre", habitacion.IdTipo);
+            ViewBag.IdTipo = new SelectList(db.TipoHabitacion, "IdTipo", "Nombre", habitacion.IdTipo);
             return View(habitacion);
         }
 
@@ -68,12 +87,12 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Habitacion habitacion = db.Habitacions.Find(id);
+            Habitacion habitacion = db.Habitacion.Find(id);
             if (habitacion == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.IdTipo = new SelectList(db.TipoHabitacions, "IdTipo", "Nombre", habitacion.IdTipo);
+            ViewBag.IdTipo = new SelectList(db.TipoHabitacion, "IdTipo", "Nombre", habitacion.IdTipo);
             return View(habitacion);
         }
 
@@ -90,7 +109,7 @@ namespace NHospital.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.IdTipo = new SelectList(db.TipoHabitacions, "IdTipo", "Nombre", habitacion.IdTipo);
+            ViewBag.IdTipo = new SelectList(db.TipoHabitacion, "IdTipo", "Nombre", habitacion.IdTipo);
             return View(habitacion);
         }
 
@@ -101,7 +120,7 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Habitacion habitacion = db.Habitacions.Find(id);
+            Habitacion habitacion = db.Habitacion.Find(id);
             if (habitacion == null)
             {
                 return HttpNotFound();
@@ -114,8 +133,8 @@ namespace NHospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Habitacion habitacion = db.Habitacions.Find(id);
-            db.Habitacions.Remove(habitacion);
+            Habitacion habitacion = db.Habitacion.Find(id);
+            db.Habitacion.Remove(habitacion);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -8,17 +8,17 @@ namespace NHospital.Models
     public partial class NHospital : DbContext
     {
         public NHospital()
-    : base("name=NHospital")
+            : base("name=NHospital1")
         {
         }
 
-        public virtual DbSet<Alta> Altas { get; set; }
-        public virtual DbSet<Cita> Citas { get; set; }
-        public virtual DbSet<Habitacion> Habitacions { get; set; }
-        public virtual DbSet<Ingreso> Ingresoes { get; set; }
-        public virtual DbSet<Medico> Medicos { get; set; }
-        public virtual DbSet<Paciente> Pacientes { get; set; }
-        public virtual DbSet<TipoHabitacion> TipoHabitacions { get; set; }
+        public virtual DbSet<Alta> Alta { get; set; }
+        public virtual DbSet<Cita> Cita { get; set; }
+        public virtual DbSet<Habitacion> Habitacion { get; set; }
+        public virtual DbSet<Ingreso> Ingreso { get; set; }
+        public virtual DbSet<Medico> Medico { get; set; }
+        public virtual DbSet<Paciente> Paciente { get; set; }
+        public virtual DbSet<TipoHabitacion> TipoHabitacion { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -27,20 +27,16 @@ namespace NHospital.Models
                 .HasPrecision(10, 4);
 
             modelBuilder.Entity<Habitacion>()
-                .Property(e => e.Numero)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Habitacion>()
                 .Property(e => e.Precio)
                 .HasPrecision(10, 4);
 
             modelBuilder.Entity<Habitacion>()
-                .HasMany(e => e.Ingresoes)
+                .HasMany(e => e.Ingreso)
                 .WithRequired(e => e.Habitacion)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Ingreso>()
-                .HasMany(e => e.Altas)
+                .HasMany(e => e.Alta)
                 .WithRequired(e => e.Ingreso)
                 .WillCascadeOnDelete(false);
 
@@ -57,7 +53,7 @@ namespace NHospital.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<Medico>()
-                .HasMany(e => e.Citas)
+                .HasMany(e => e.Cita)
                 .WithRequired(e => e.Medico)
                 .WillCascadeOnDelete(false);
 
@@ -70,12 +66,12 @@ namespace NHospital.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<Paciente>()
-                .HasMany(e => e.Citas)
+                .HasMany(e => e.Cita)
                 .WithRequired(e => e.Paciente)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Paciente>()
-                .HasMany(e => e.Ingresoes)
+                .HasMany(e => e.Ingreso)
                 .WithRequired(e => e.Paciente)
                 .WillCascadeOnDelete(false);
 
@@ -84,7 +80,7 @@ namespace NHospital.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<TipoHabitacion>()
-                .HasMany(e => e.Habitacions)
+                .HasMany(e => e.Habitacion)
                 .WithRequired(e => e.TipoHabitacion)
                 .WillCascadeOnDelete(false);
         }
