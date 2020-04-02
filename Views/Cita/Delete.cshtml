@@ -12,7 +12,16 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Medico.Nombre)
+            @Html.DisplayName("Codigo de cita")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IdCita)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayName("Medico")
         </dt>
 
         <dd>
@@ -20,7 +29,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Paciente.Nombre)
+            @Html.DisplayName("Paciente")
         </dt>
 
         <dd>
@@ -35,14 +44,13 @@
             @Html.DisplayFor(model => model.Fecha)
         </dd>
 
-    </dl>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
 
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
-        </div>
-    }
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" /> |
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
 </div>

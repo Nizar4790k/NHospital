@@ -10,8 +10,18 @@
     <h4>Cita</h4>
     <hr />
     <dl class="dl-horizontal">
+
         <dt>
-            @Html.DisplayNameFor(model => model.Medico.Nombre)
+            @Html.DisplayName("Codigo de cita")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IdCita)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayName("Medico")
         </dt>
 
         <dd>
@@ -19,7 +29,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Paciente.Nombre)
+            @Html.DisplayName("Paciente")
         </dt>
 
         <dd>

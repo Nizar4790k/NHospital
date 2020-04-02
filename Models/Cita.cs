@@ -14,6 +14,7 @@ namespace NHospital.Models
 
         public DateTime Fecha { get; set; }
 
+        
         public int IdPaciente { get; set; }
 
         public int IdMedico { get; set; }

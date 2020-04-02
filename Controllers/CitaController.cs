@@ -41,6 +41,8 @@ namespace NHospital.Controllers
         {
             ViewBag.IdMedico = new SelectList(db.Medico, "IdMedico", "Nombre");
             ViewBag.IdPaciente = new SelectList(db.Paciente, "IdPaciente", "Nombre");
+            ViewBag.PacienteNoExiste = false;
+
             return View();
         }
 
@@ -54,18 +56,33 @@ namespace NHospital.Controllers
             if (ModelState.IsValid)
             {
                 db.Cita.Add(cita);
-                db.SaveChanges();
+
+                try
+                {
+                 
+                    db.SaveChanges();
+                }
+                catch(System.Data.Entity.Infrastructure.DbUpdateException){
+                    ViewBag.IdMedico = new SelectList(db.Medico, "IdMedico", "Nombre", cita.IdMedico);
+                    ViewBag.IdPaciente = new SelectList(db.Paciente, "IdPaciente", "Nombre", cita.IdPaciente);
+                    ViewBag.PacienteNoExiste = true;
+                    return View(cita);
+                }
+               
                 return RedirectToAction("Index");
             }
-
             ViewBag.IdMedico = new SelectList(db.Medico, "IdMedico", "Nombre", cita.IdMedico);
             ViewBag.IdPaciente = new SelectList(db.Paciente, "IdPaciente", "Nombre", cita.IdPaciente);
             return View(cita);
+
         }
 
         // GET: Cita/Edit/5
         public ActionResult Edit(int? id)
         {
+
+            ViewBag.PacienteNoExiste = false;
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -90,7 +107,21 @@ namespace NHospital.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(cita).State = EntityState.Modified;
-                db.SaveChanges();
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (System.Data.Entity.Infrastructure.DbUpdateException)
+                {
+                    ViewBag.PacienteNoExiste = true;
+                    ViewBag.IdMedico = new SelectList(db.Medico, "IdMedico", "Nombre", cita.IdMedico);
+                    ViewBag.IdPaciente = new SelectList(db.Paciente, "IdPaciente", "Nombre", cita.IdPaciente);
+                    return View(cita);
+
+                }
+
+                
                 return RedirectToAction("Index");
             }
             ViewBag.IdMedico = new SelectList(db.Medico, "IdMedico", "Nombre", cita.IdMedico);
