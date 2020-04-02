@@ -11,20 +11,30 @@
 </p>
 <table class="table">
     <tr>
+
         <th>
-            @Html.DisplayNameFor(model => model.Habitacion.Numero)
+            @Html.DisplayName("Codigo de Ingreso")
+        </th>
+
+        <th>
+            @Html.DisplayName("Numero de habitacion")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Paciente.Nombre)
+            @Html.DisplayName("Paciente")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FechaIngreso)
+            @Html.DisplayName("Fecha de ingreso")
         </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
+
+        <td>
+            @Html.DisplayFor(modelItem =>item.IdIngreso)
+        </td>
+
         <td>
             @Html.DisplayFor(modelItem => item.Habitacion.Numero)
         </td>
