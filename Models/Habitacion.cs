@@ -23,11 +23,11 @@ namespace NHospital.Models
         public int IdHabitacion { get; set; }
 
         [Range(0, 2147483647, ErrorMessage ="Valor no valido")]
-        [Index(IsUnique = true)]
+        
         [Required(ErrorMessage ="El numero de habitacion es obligatorio")]
         public int Numero { get; set; }
 
-       
+      
         public int IdTipo { get; set; }
 
         [Range(0, 2147483647, ErrorMessage = "Valor no valido")]

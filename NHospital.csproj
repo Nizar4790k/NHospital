@@ -214,6 +214,7 @@
     <Content Include="Views\Alta\Details.cshtml" />
     <Content Include="Views\Alta\Edit.cshtml" />
     <Content Include="Views\Alta\Index.cshtml" />
+    <Content Include="Views\Alta\Create2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

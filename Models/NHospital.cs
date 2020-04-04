@@ -25,6 +25,8 @@ namespace NHospital.Models
             modelBuilder.Entity<Alta>()
                 .Property(e => e.MontoTotal)
                 .HasPrecision(10, 4);
+                
+                
 
             modelBuilder.Entity<Habitacion>()
                 .Property(e => e.Precio)
@@ -33,12 +35,12 @@ namespace NHospital.Models
             modelBuilder.Entity<Habitacion>()
                 .HasMany(e => e.Ingreso)
                 .WithRequired(e => e.Habitacion)
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Ingreso>()
                 .HasMany(e => e.Alta)
                 .WithRequired(e => e.Ingreso)
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Medico>()
                 .Property(e => e.Nombre)
@@ -55,7 +57,7 @@ namespace NHospital.Models
             modelBuilder.Entity<Medico>()
                 .HasMany(e => e.Cita)
                 .WithRequired(e => e.Medico)
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Paciente>()
                 .Property(e => e.Nombre)
@@ -68,12 +70,12 @@ namespace NHospital.Models
             modelBuilder.Entity<Paciente>()
                 .HasMany(e => e.Cita)
                 .WithRequired(e => e.Paciente)
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Paciente>()
                 .HasMany(e => e.Ingreso)
                 .WithRequired(e => e.Paciente)
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<TipoHabitacion>()
                 .Property(e => e.Nombre)
@@ -82,7 +84,7 @@ namespace NHospital.Models
             modelBuilder.Entity<TipoHabitacion>()
                 .HasMany(e => e.Habitacion)
                 .WithRequired(e => e.TipoHabitacion)
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(true);
         }
     }
 }
