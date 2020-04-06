@@ -134,18 +134,18 @@
     <Compile Include="Controllers\IngresoController.cs" />
     <Compile Include="Controllers\MedicoController.cs" />
     <Compile Include="Controllers\PacienteController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="Models\Alta.cs" />
     <Compile Include="Models\Cita.cs" />
     <Compile Include="Models\Habitacion.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Models\Ingreso.cs" />
     <Compile Include="Models\Medico.cs" />
     <Compile Include="Models\NHospital.cs" />
     <Compile Include="Models\Paciente.cs" />
     <Compile Include="Models\TipoHabitacion.cs" />
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +214,7 @@
     <Content Include="Views\Alta\Details.cshtml" />
     <Content Include="Views\Alta\Edit.cshtml" />
     <Content Include="Views\Alta\Index.cshtml" />
+    <Content Include="Views\Alta\Create2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

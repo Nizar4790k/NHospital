@@ -9,26 +9,34 @@ namespace NHospital.Models
     [Table("Habitacion")]
     public partial class Habitacion
     {
+
+         const int MAX = 2147483647;
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Habitacion()
         {
-            Ingresoes = new HashSet<Ingreso>();
+            Ingreso = new HashSet<Ingreso>();
+
         }
 
         [Key]
         public int IdHabitacion { get; set; }
 
-        [Required]
-        [StringLength(8)]
-        public string Numero { get; set; }
+        [Range(0, 2147483647, ErrorMessage ="Valor no valido")]
+        
+        [Required(ErrorMessage ="El numero de habitacion es obligatorio")]
+        public int Numero { get; set; }
 
+      
         public int IdTipo { get; set; }
 
+        [Range(0, 2147483647, ErrorMessage = "Valor no valido")]
+        [Required(ErrorMessage = "El precio de la habitacion es obligatorio")]
         public decimal Precio { get; set; }
 
         public virtual TipoHabitacion TipoHabitacion { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Ingreso> Ingresoes { get; set; }
+        public virtual ICollection<Ingreso> Ingreso { get; set; }
     }
 }

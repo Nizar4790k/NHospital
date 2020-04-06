@@ -12,34 +12,57 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Ingreso.IdIngreso)
+            @Html.DisplayName("Codigo de Ingreso")
+        </th>
+
+        <th>
+            @Html.DisplayName("Paciente")
+        </th>
+
+
+        <th>
+
+            @Html.DisplayName("Fecha de entrada")
+        </th>
+
+        <th>
+            @Html.DisplayName("Fecha de salida")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FechaSalida)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MontoTotal)
+
+            @Html.DisplayName("Monto total")
         </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Ingreso.IdIngreso)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FechaSalida)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MontoTotal)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.IdAlta }) |
-            @Html.ActionLink("Details", "Details", new { id=item.IdAlta }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.IdAlta })
-        </td>
-    </tr>
-}
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Ingreso.IdIngreso)
+    </td>
 
-</table>
+
+    <td>
+        @Html.DisplayFor(modelItem => item.Ingreso.Paciente.Nombre)
+    </td>
+
+    <td>
+        @Html.DisplayFor(modelItem => item.Ingreso.FechaIngreso)
+    </td>
+
+
+    <td>
+        @Html.DisplayFor(modelItem => item.FechaSalida)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.MontoTotal)
+    </td>
+    <td>
+        <!--- // @Html.ActionLink("Edit", "Edit", new { id = item.IdAlta }) |-->
+        <!-- @Html.ActionLink("Details", "Details", new { id = item.IdAlta }) |-->
+        @Html.ActionLink("Delete", "Delete", new { id = item.IdAlta })
+    </td>
+    </tr>
+    }
+
+    </table>

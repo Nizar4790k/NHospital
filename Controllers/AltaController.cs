@@ -6,18 +6,22 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Diagnostics;
 using NHospital.Models;
 
 namespace NHospital.Controllers
 {
     public class AltaController : Controller
     {
+
+        private static Alta alta;
+
         private Models.NHospital db = new Models.NHospital();
 
         // GET: Alta
         public ActionResult Index()
         {
-            var altas = db.Altas.Include(a => a.Ingreso);
+            var altas = db.Alta.Include(a => a.Ingreso);
             return View(altas.ToList());
         }
 
@@ -28,7 +32,7 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Alta alta = db.Altas.Find(id);
+            Alta alta = db.Alta.Find(id);
             if (alta == null)
             {
                 return HttpNotFound();
@@ -39,7 +43,12 @@ namespace NHospital.Controllers
         // GET: Alta/Create
         public ActionResult Create()
         {
-            ViewBag.IdIngreso = new SelectList(db.Ingresoes, "IdIngreso", "IdIngreso");
+            ViewBag.IdIngreso = new SelectList(db.Ingreso, "IdIngreso", "IdIngreso");
+            
+            ViewBag.NoExisteIngreso = false;
+            ViewBag.IngresoYaDespachado = false;
+            ViewBag.FechaMenorQueIngreso = false;
+
             return View();
         }
 
@@ -50,16 +59,127 @@ namespace NHospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IdAlta,IdIngreso,FechaSalida,MontoTotal")] Alta alta)
         {
+
+            ViewBag.IdIngreso = new SelectList(db.Ingreso, "IdIngreso", "IdIngreso", alta.IdIngreso);
+
+
+            ViewBag.NoExisteIngreso = false;
+            ViewBag.IngresoYaDespachado = false;
+            ViewBag.FechaMenorQueIngreso = false;
+
+
             if (ModelState.IsValid)
+
             {
-                db.Altas.Add(alta);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+
+               
+            
+                 var altasMedicas = db.Alta.ToList(); //Obteniendo la lista de todas las altas medicas
+
+
+
+                alta.Ingreso = db.Ingreso.Find(alta.IdIngreso); // Obteniendo el ingreso a partir del codigo.
+
+                if (alta.Ingreso == null)
+                {
+                    ViewBag.NoExisteIngreso = true;  // Viendo si el ingreso existe
+                    return View(alta);
+
+                }
+
+                List<Alta> altaIngreso = (from alta2 in altasMedicas
+                                          where alta2.IdIngreso == alta.IdIngreso // Aqui obteniendo la alta que tiene el ingreso especificado
+                                          select alta2).ToList();
+
+                foreach (Alta a in altaIngreso)
+                {
+                    if (a.IdIngreso == alta.IdIngreso)   // Verificando si el ingreso fue despachado
+                    {
+                        ViewBag.IngresoYaDespachado = true;
+                        return View(alta);
+                    }
+
+                }
+
+
+
+
+                DateTime fechaInicial = alta.Ingreso.FechaIngreso;   //Obteniendo las fechas iniciales y finales
+                DateTime fechaFinal = alta.FechaSalida;
+
+                int result = DateTime.Compare(fechaInicial, fechaFinal);
+
+
+                if (result > 0)                                                         // Comparando las fechas
+                {
+
+                    ViewBag.FechaMenorQueIngreso = true;
+                    return View(alta);
+                }
+
+
+
+
+
+                
+                   
+                alta.MontoTotal = (decimal)GetMontoEntreDosFechas(fechaInicial, fechaFinal, // Calculando el monto final
+                   ((double)(alta.Ingreso.Habitacion.Precio))); 
+
+
+
+
+                return RedirectToAction("Create2", alta);
+
+                
+
+               
             }
 
-            ViewBag.IdIngreso = new SelectList(db.Ingresoes, "IdIngreso", "IdIngreso", alta.IdIngreso);
+
+
+             return View(alta);
+
+           
+    
+        }
+
+
+      
+     
+        public ActionResult Create2(Alta alta)
+        {
+
+            alta.Ingreso = db.Ingreso.Find(alta.IdIngreso);
+
+            AltaController.alta = alta;
+
+          
             return View(alta);
         }
+
+        [HttpPost]
+        public ActionResult Create3()
+        {
+
+            AltaController.alta.Ingreso=null;
+
+
+
+            db.Alta.Add(AltaController.alta);
+          
+            db.SaveChanges();
+
+          
+
+        
+
+        
+
+            
+            return RedirectToAction("Index");
+        }
+
 
         // GET: Alta/Edit/5
         public ActionResult Edit(int? id)
@@ -68,12 +188,12 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Alta alta = db.Altas.Find(id);
+            Alta alta = db.Alta.Find(id);
             if (alta == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.IdIngreso = new SelectList(db.Ingresoes, "IdIngreso", "IdIngreso", alta.IdIngreso);
+            ViewBag.IdIngreso = new SelectList(db.Ingreso, "IdIngreso", "IdIngreso", alta.IdIngreso);
             return View(alta);
         }
 
@@ -90,7 +210,7 @@ namespace NHospital.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.IdIngreso = new SelectList(db.Ingresoes, "IdIngreso", "IdIngreso", alta.IdIngreso);
+            ViewBag.IdIngreso = new SelectList(db.Ingreso, "IdIngreso", "IdIngreso", alta.IdIngreso);
             return View(alta);
         }
 
@@ -101,7 +221,7 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Alta alta = db.Altas.Find(id);
+            Alta alta = db.Alta.Find(id);
             if (alta == null)
             {
                 return HttpNotFound();
@@ -114,8 +234,8 @@ namespace NHospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Alta alta = db.Altas.Find(id);
-            db.Altas.Remove(alta);
+            Alta alta = db.Alta.Find(id);
+            db.Alta.Remove(alta);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -128,5 +248,21 @@ namespace NHospital.Controllers
             }
             base.Dispose(disposing);
         }
+
+        
+        private double GetMontoEntreDosFechas(DateTime fechaInicial, DateTime fechaFinal,double precioPorDia)
+        {
+            double diasFinales = (fechaFinal.Year*365.0)+(fechaFinal.Month*30.417)+ fechaFinal.Day;
+            double diasIniciales  = (fechaInicial.Year * 365.0) + (fechaInicial.Month * 30.417) + fechaInicial.Day;
+
+            double diasTotales = diasFinales - diasIniciales;
+
+            return (precioPorDia * diasTotales);
+
+
+
+        }
+        
+
     }
 }

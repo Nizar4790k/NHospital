@@ -17,7 +17,7 @@ namespace NHospital.Controllers
         // GET: Ingreso
         public ActionResult Index()
         {
-            var ingresoes = db.Ingresoes.Include(i => i.Habitacion).Include(i => i.Paciente);
+            var ingresoes = db.Ingreso.Include(i => i.Habitacion).Include(i => i.Paciente);
             return View(ingresoes.ToList());
         }
 
@@ -28,7 +28,7 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Ingreso ingreso = db.Ingresoes.Find(id);
+            Ingreso ingreso = db.Ingreso.Find(id);
             if (ingreso == null)
             {
                 return HttpNotFound();
@@ -39,8 +39,11 @@ namespace NHospital.Controllers
         // GET: Ingreso/Create
         public ActionResult Create()
         {
-            ViewBag.IdHabitacion = new SelectList(db.Habitacions, "IdHabitacion", "Numero");
-            ViewBag.IdPaciente = new SelectList(db.Pacientes, "IdPaciente", "Nombre");
+            ViewBag.IdHabitacion = new SelectList(db.Habitacion, "IdHabitacion", "Numero");
+            ViewBag.IdPaciente = new SelectList(db.Paciente, "IdPaciente", "Nombre");
+
+            ViewBag.PacienteNoExiste = false;
+
             return View();
         }
 
@@ -53,30 +56,47 @@ namespace NHospital.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Ingresoes.Add(ingreso);
-                db.SaveChanges();
+                db.Ingreso.Add(ingreso);
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (System.Data.Entity.Infrastructure.DbUpdateException)
+                {
+                    ViewBag.PacienteNoExiste = true;
+     
+                    ViewBag.IdHabitacion = new SelectList(db.Habitacion, "IdHabitacion", "Numero", ingreso.IdHabitacion);
+                    ViewBag.IdPaciente = new SelectList(db.Paciente, "IdPaciente", "Nombre", ingreso.IdPaciente);
+                    return View(ingreso);
+                }
+
+                
                 return RedirectToAction("Index");
             }
 
-            ViewBag.IdHabitacion = new SelectList(db.Habitacions, "IdHabitacion", "Numero", ingreso.IdHabitacion);
-            ViewBag.IdPaciente = new SelectList(db.Pacientes, "IdPaciente", "Nombre", ingreso.IdPaciente);
+            ViewBag.IdHabitacion = new SelectList(db.Habitacion, "IdHabitacion", "Numero", ingreso.IdHabitacion);
+            ViewBag.IdPaciente = new SelectList(db.Paciente, "IdPaciente", "Nombre", ingreso.IdPaciente);
             return View(ingreso);
         }
 
         // GET: Ingreso/Edit/5
         public ActionResult Edit(int? id)
         {
+
+            ViewBag.PacienteNoExiste = false;
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Ingreso ingreso = db.Ingresoes.Find(id);
+            Ingreso ingreso = db.Ingreso.Find(id);
             if (ingreso == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.IdHabitacion = new SelectList(db.Habitacions, "IdHabitacion", "Numero", ingreso.IdHabitacion);
-            ViewBag.IdPaciente = new SelectList(db.Pacientes, "IdPaciente", "Nombre", ingreso.IdPaciente);
+            ViewBag.IdHabitacion = new SelectList(db.Habitacion, "IdHabitacion", "Numero", ingreso.IdHabitacion);
+            ViewBag.IdPaciente = new SelectList(db.Paciente, "IdPaciente", "Nombre", ingreso.IdPaciente);
             return View(ingreso);
         }
 
@@ -90,11 +110,25 @@ namespace NHospital.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(ingreso).State = EntityState.Modified;
-                db.SaveChanges();
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (System.Data.Entity.Infrastructure.DbUpdateException)
+                {
+
+                    ViewBag.PacienteNoExiste = true;
+
+                    ViewBag.IdHabitacion = new SelectList(db.Habitacion, "IdHabitacion", "Numero", ingreso.IdHabitacion);
+                    ViewBag.IdPaciente = new SelectList(db.Paciente, "IdPaciente", "Nombre", ingreso.IdPaciente);
+                    return View(ingreso);
+                }
+               
                 return RedirectToAction("Index");
             }
-            ViewBag.IdHabitacion = new SelectList(db.Habitacions, "IdHabitacion", "Numero", ingreso.IdHabitacion);
-            ViewBag.IdPaciente = new SelectList(db.Pacientes, "IdPaciente", "Nombre", ingreso.IdPaciente);
+            ViewBag.IdHabitacion = new SelectList(db.Habitacion, "IdHabitacion", "Numero", ingreso.IdHabitacion);
+            ViewBag.IdPaciente = new SelectList(db.Paciente, "IdPaciente", "Nombre", ingreso.IdPaciente);
             return View(ingreso);
         }
 
@@ -105,7 +139,7 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Ingreso ingreso = db.Ingresoes.Find(id);
+            Ingreso ingreso = db.Ingreso.Find(id);
             if (ingreso == null)
             {
                 return HttpNotFound();
@@ -118,8 +152,8 @@ namespace NHospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Ingreso ingreso = db.Ingresoes.Find(id);
-            db.Ingresoes.Remove(ingreso);
+            Ingreso ingreso = db.Ingreso.Find(id);
+            db.Ingreso.Remove(ingreso);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -129,6 +163,7 @@ namespace NHospital.Controllers
             if (disposing)
             {
                 db.Dispose();
+               
             }
             base.Dispose(disposing);
         }

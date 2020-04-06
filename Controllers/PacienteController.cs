@@ -17,7 +17,7 @@ namespace NHospital.Controllers
         // GET: Paciente
         public ActionResult Index()
         {
-            return View(db.Pacientes.ToList());
+            return View(db.Paciente.ToList());
         }
 
         // GET: Paciente/Details/5
@@ -27,7 +27,7 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Paciente paciente = db.Pacientes.Find(id);
+            Paciente paciente = db.Paciente.Find(id);
             if (paciente == null)
             {
                 return HttpNotFound();
@@ -50,7 +50,7 @@ namespace NHospital.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Pacientes.Add(paciente);
+                db.Paciente.Add(paciente);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -65,7 +65,7 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Paciente paciente = db.Pacientes.Find(id);
+            Paciente paciente = db.Paciente.Find(id);
             if (paciente == null)
             {
                 return HttpNotFound();
@@ -96,7 +96,7 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Paciente paciente = db.Pacientes.Find(id);
+            Paciente paciente = db.Paciente.Find(id);
             if (paciente == null)
             {
                 return HttpNotFound();
@@ -109,8 +109,8 @@ namespace NHospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Paciente paciente = db.Pacientes.Find(id);
-            db.Pacientes.Remove(paciente);
+            Paciente paciente = db.Paciente.Find(id);
+            db.Paciente.Remove(paciente);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
