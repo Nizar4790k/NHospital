@@ -23,23 +23,96 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Cedula)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Asegurado)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.IdPaciente }) |
-            @Html.ActionLink("Details", "Details", new { id=item.IdPaciente }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.IdPaciente })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cedula)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Asegurado)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.IdPaciente }) |
+                @Html.ActionLink("Details", "Details", new { id = item.IdPaciente }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.IdPaciente })
+            </td>
+        </tr>
+    }
 
 </table>
+
+<br />
+<br />
+<br />
+
+@using (Html.BeginForm())
+{
+
+    <h2>Buscar por:</h2>
+
+    <br />
+
+    <div>
+      
+        
+        @Html.RadioButton("paciente","Asegurado",true,new { onclick="function"})
+        @Html.Label("Nombre")
+        @Html.TextBox("nombre",null,new {id="nombre", @class="form-control"})
+    </div>
+
+    <br />
+   
+
+    <div>
+        <input type="radio" value="Asegurado" name="radio"  />
+
+        @Html.Label("Cedula")
+        @Html.TextBox("cedula", null, new {id="cedula", @class = "form-control" })
+    </div>
+
+    <br />
+   
+
+
+    <div>
+        <input type="radio" value="Asegurado" name="radio"  />
+        @Html.Label("Asegurado")
+        @Html.CheckBox("cedula",new {id="asegurado" })
+    </div>
+
+    <br />
+
+    <input type="submit" value="Consultar" />
+
+
+    <script>
+
+
+
+        function elegirNombre() {
+
+            document.
+
+            
+              
+            }
+
+
+        
+
+      
+    </script>
+
+}
+
+
+
+
+
+
+
+
