@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -15,10 +16,98 @@ namespace NHospital.Controllers
         private Models.NHospital db = new Models.NHospital();
 
         // GET: Paciente
+
+            
         public ActionResult Index()
         {
             return View(db.Paciente.ToList());
         }
+
+        [HttpPost]
+        public ActionResult Index2()
+        {
+
+            List<Paciente> listaPacientes = db.Paciente.ToList();
+
+            string radio = Request.Form["radio"];
+            
+
+            
+
+
+            if (radio == "Nombre")
+            {
+
+            }
+            string nombre = Request.Form["nombre"];
+
+                var listaPorNombre = from paciente in listaPacientes
+                                     where paciente.Nombre == nombre
+                                     select paciente;
+
+
+                return View(listaPorNombre);
+
+               
+           
+            
+            /*
+            
+            else if (radio == "Cedula")
+            {
+                string cedula = Request.Form["cedula"];
+
+                var listaPorCedula = from paciente in listaPacientes
+                                     where paciente.Cedula == cedula
+                                     select paciente;
+
+
+                return View(listaPorCedula);
+            } else if (radio == "Asegurado")
+            {
+               bool esAsegurado = Request.Form["asegurado"] == "on";
+
+                var listaPorAsegurado = from paciente in listaPacientes
+                                        where paciente.Asegurado == esAsegurado
+                                        select paciente;
+
+
+                return View(listaPorAsegurado);
+
+            }
+
+            */
+          
+
+
+            /*else if (value == "Cedula")
+            {
+                value = Request.Form["cedula"];
+                return View(listaPacientes.Where(a => a.Cedula == value).ToList());
+            }
+            else if (value == "Asegurado")
+            {
+                value = Request.Form["asegurado"];
+
+                if (value != null && value == "on")
+                {
+                    return View(listaPacientes.Where(a => a.Asegurado == true));
+                }
+                else
+                {
+                    return View(listaPacientes.Where(a => a.Asegurado == false));
+                }
+
+            }
+            else
+            {
+               
+            } */
+
+            return View(listaPacientes);
+        }
+
+       
 
         // GET: Paciente/Details/5
         public ActionResult Details(int? id)
