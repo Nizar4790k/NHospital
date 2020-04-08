@@ -4,6 +4,10 @@ CREATE DATABASE NHospital;
 USE NHospital;
 
 
+
+
+
+
 CREATE TABLE TipoHabitacion(
 
 IdTipo int primary key identity(1,1) NOT NULL,
@@ -20,13 +24,19 @@ Especialidad varchar(max) NOT NULL
 );
 
 
+
 CREATE TABLE Paciente(
 IdPaciente int primary key identity(1,1) NOT NULL ,
 Nombre varchar(max) NOT NULL,
-Cedula varchar(9) NOT NULL,
+Cedula varchar(11) ,
 Asegurado bit NOT NULL
 
 );
+
+CREATE UNIQUE NONCLUSTERED INDEX idx_paciente
+ON Paciente(Cedula)
+WHERE Cedula IS NOT NULL;
+
 
 
 CREATE TABLE Habitacion(
@@ -87,7 +97,7 @@ DROP TABLE Habitacion;
 
 */
 
-
+/*
 CREATE UNIQUE NONCLUSTERED INDEX index_cedula on Paciente(Cedula) WHere cEDULA is not null;
 
 CREATE UNIQUE INDEX index_cedula ON dbo.Paciente(Cedula) WHERE Cedula IS NOT NULL;
@@ -99,3 +109,4 @@ SELECT * FROM TipoHabitacion;
 SELECT * FROM Ingreso;
 SELECT * FROM Paciente;
 SELECT * FROM Ingreso;
+*/

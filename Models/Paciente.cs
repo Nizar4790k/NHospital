@@ -22,7 +22,7 @@ namespace NHospital.Models
         [Required]
         public string Nombre { get; set; }
 
-        [StringLength(9)]
+        [StringLength(11)]
         public string Cedula { get; set; }
 
         public bool Asegurado { get; set; }
