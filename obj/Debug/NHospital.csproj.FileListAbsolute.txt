@@ -157,8 +157,8 @@ E:\Repo\NHospital\bin\System.Web.WebPages.Razor.xml
 E:\Repo\NHospital\bin\Newtonsoft.Json.xml
 E:\Repo\NHospital\bin\Antlr3.Runtime.pdb
 E:\Repo\NHospital\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-E:\Repo\NHospital\obj\Debug\NHospital.csprojAssemblyReference.cache
 E:\Repo\NHospital\obj\Debug\NHospital.csproj.CopyComplete
 E:\Repo\NHospital\obj\Debug\NHospital.dll
 E:\Repo\NHospital\obj\Debug\NHospital.pdb
 D:\Documentos\Visual Studio Projects\NHospital\obj\Debug\NHospital.csprojAssemblyReference.cache
+E:\Repo\NHospital\obj\Debug\NHospital.csprojAssemblyReference.cache

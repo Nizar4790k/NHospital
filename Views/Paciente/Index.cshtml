@@ -49,7 +49,7 @@
 <br />
 <br />
 
-@using (Html.BeginForm("Index2","Paciente",FormMethod.Post))
+@using (Html.BeginForm())
 {
 
     <h2>Buscar por:</h2>
@@ -59,9 +59,9 @@
     <div>
       
         
-        @Html.RadioButton("radio","Nombre",true,new { onclick="activarNombre();"})
+        @Html.RadioButton("radio","Nombre",new { onclick="activarNombre();"})
         @Html.Label("Nombre")
-        @Html.TextBox("nombre","",new {id="nombre", @class="form-control"})
+        @Html.TextBox("nombre","",new {disabled=true,id="nombre", @class="form-control"})
     </div>
 
     <br />
@@ -85,7 +85,7 @@
     <div>
         @Html.RadioButton("radio", "Asegurado", new { onclick = "activarAsegurado();" })
         @Html.Label("Asegurado")
-        @Html.CheckBox("asegurado", new {disabled=true, id = "asegurado" })
+        @Html.CheckBox("asegurado",false, new {disabled=true, id = "asegurado" })
        
     </div>
 
