@@ -23,7 +23,7 @@ Especialidad varchar(max) NOT NULL
 CREATE TABLE Paciente(
 IdPaciente int primary key identity(1,1) NOT NULL ,
 Nombre varchar(max) NOT NULL,
-Cedula varchar(9) UNIQUE,
+Cedula varchar(9) NOT NULL,
 Asegurado bit NOT NULL
 
 );
@@ -88,6 +88,10 @@ DROP TABLE Habitacion;
 
 */
 
+
+CREATE UNIQUE NONCLUSTERED INDEX index_cedula on Paciente(Cedula) WHere cEDULA is not null;
+
+CREATE UNIQUE INDEX index_cedula ON dbo.Paciente(Cedula) WHERE Cedula IS NOT NULL;
 
 
 insert into Alta(IdIngreso,FechaSalida,MontoTotal) values(5,'10/02/1998',1460);
