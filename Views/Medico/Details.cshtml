@@ -10,6 +10,15 @@
     <h4>Medico</h4>
     <hr />
     <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayName("Codigo de Medico")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model=> model.IdMedico)
+        </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.Nombre)
         </dt>
@@ -19,20 +28,16 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Exequatur)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Exequatur)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.Especialidad)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Especialidad)
         </dd>
+
+        <dt>
+            <a href="/Exequatur/@Model.Exequatur">Exequatur</a>
+        </dt>
 
     </dl>
 </div>

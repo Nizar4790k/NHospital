@@ -17,7 +17,43 @@ namespace NHospital.Controllers
         // GET: Medico
         public ActionResult Index()
         {
-            return View(db.Medicos.ToList());
+
+            List<Medico> medicos = db.Medico.ToList();
+
+            ViewBag.radio =Request.Form["radio"];
+
+            if (ViewBag.radio == "Nombre")
+            {
+
+                string nombre = Request.Form["Nombre"];
+                ViewBag.nombreMedico = nombre;
+
+                var listaPorNombre = from medico in medicos
+                                     where medico.Nombre == nombre
+                                     select medico;
+
+                return View(listaPorNombre);
+            }
+
+
+            if (ViewBag.radio == "Especialidad")
+            {
+
+                string especialidad = Request.Form["Especialidad"];
+                ViewBag.especialidadMedico = especialidad;
+
+                var listaPorEspecialidad = from medico in medicos
+                                     where medico.Especialidad == especialidad
+                                     select medico;
+
+                return View(listaPorEspecialidad);
+            }
+
+
+
+
+
+            return View(medicos);
         }
 
         // GET: Medico/Details/5
@@ -27,7 +63,7 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Medico medico = db.Medicos.Find(id);
+            Medico medico = db.Medico.Find(id);
             if (medico == null)
             {
                 return HttpNotFound();
@@ -46,11 +82,18 @@ namespace NHospital.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IdMedico,Nombre,Exequatur,Especialidad")] Medico medico)
+        public ActionResult Create([Bind(Include = "IdMedico,Nombre,Exequatur,Especialidad")] Medico medico,HttpPostedFileBase exequatur)
         {
-            if (ModelState.IsValid)
+
+
+
+          
+
+            if (ModelState.IsValid && exequatur!=null)
             {
-                db.Medicos.Add(medico);
+  
+                GuardarExecuatur(exequatur,medico);
+                db.Medico.Add(medico);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -65,7 +108,7 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Medico medico = db.Medicos.Find(id);
+            Medico medico = db.Medico.Find(id);
             if (medico == null)
             {
                 return HttpNotFound();
@@ -78,10 +121,11 @@ namespace NHospital.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IdMedico,Nombre,Exequatur,Especialidad")] Medico medico)
+        public ActionResult Edit([Bind(Include = "IdMedico,Nombre,Exequatur,Especialidad")] Medico medico, HttpPostedFileBase exequatur)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && exequatur!=null)
             {
+                GuardarExecuatur(exequatur, medico);
                 db.Entry(medico).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -96,7 +140,7 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Medico medico = db.Medicos.Find(id);
+            Medico medico = db.Medico.Find(id);
             if (medico == null)
             {
                 return HttpNotFound();
@@ -109,8 +153,8 @@ namespace NHospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Medico medico = db.Medicos.Find(id);
-            db.Medicos.Remove(medico);
+            Medico medico = db.Medico.Find(id);
+            db.Medico.Remove(medico);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -123,5 +167,17 @@ namespace NHospital.Controllers
             }
             base.Dispose(disposing);
         }
+
+        private void GuardarExecuatur(HttpPostedFileBase file,Medico medico)
+        {
+         
+    
+           medico.Exequatur = "Exequatur" + Guid.NewGuid().ToString() + ".pdf";
+        
+           
+
+            file.SaveAs(Server.MapPath("/Exequatur/" + medico.Exequatur));
+        }
+
     }
 }

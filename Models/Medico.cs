@@ -12,7 +12,7 @@ namespace NHospital.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Medico()
         {
-            Citas = new HashSet<Cita>();
+            Cita = new HashSet<Cita>();
         }
 
         [Key]
@@ -28,6 +28,6 @@ namespace NHospital.Models
         public string Especialidad { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Cita> Citas { get; set; }
+        public virtual ICollection<Cita> Cita { get; set; }
     }
 }

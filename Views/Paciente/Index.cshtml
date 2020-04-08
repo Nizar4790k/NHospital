@@ -4,13 +4,19 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Pacientes</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create") |
+    <input type="button" value="Export to PDF" onclick="exportToPdf();" />
+    
 </p>
-<table class="table">
+<table class="table" id="tablon">
     <tr>
+        <th>
+            @Html.DisplayName("Codigo de Paciente")
+        </th>
+
         <th>
             @Html.DisplayNameFor(model => model.Nombre)
         </th>
@@ -23,23 +29,155 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Cedula)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Asegurado)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.IdPaciente }) |
-            @Html.ActionLink("Details", "Details", new { id=item.IdPaciente }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.IdPaciente })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+<tr>
+
+    <td>
+        @Html.DisplayFor(modelItem => item.IdPaciente)
+    </td>
+
+    <td>
+        @Html.DisplayFor(modelItem => item.Nombre)
+    </td>
+
+    <td>
+        @Html.DisplayFor(modelItem => item.Cedula)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Asegurado)
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.IdPaciente }) |
+        @Html.ActionLink("Details", "Details", new { id = item.IdPaciente }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.IdPaciente })
+    </td>
+</tr>
+    }
 
 </table>
+
+<br />
+<br />
+<br />
+
+@using (Html.BeginForm())
+{
+
+    <h2>Buscar por:</h2>
+
+    <br />
+
+    <div>
+      
+        
+        @Html.RadioButton("radio","Nombre",true,new { onclick="activarNombre();"})
+   
+        @Html.Label("Nombre")
+        @Html.TextBox("nombre","",new {id="nombre", @class="form-control"})
+    </div>
+
+    <br />
+   
+
+    <div>
+        
+        
+
+
+        @Html.RadioButton("radio","Cedula",new { onClick="activarCedula();"})
+        @Html.Label("Cedula")
+        @Html.TextBox("cedula", "", new {disabled=true, id = "cedula", @class = "form-control" })
+       
+    </div>
+
+    <br />
+   
+
+
+    <div>
+        @Html.RadioButton("radio", "Asegurado", new { onclick = "activarAsegurado();" })
+        @Html.Label("Asegurado")
+        @Html.CheckBox("asegurado",false, new {disabled=true, id = "asegurado" })
+       
+    </div>
+
+    <br />
+
+    <input type="submit" value="Consultar" />
+    
+
+
+    <script>
+
+        var txtNombre = document.getElementById("nombre");
+        var txtCedula = document.getElementById("cedula");
+        var checkAsegurado = document.getElementById("asegurado");
+        
+
+        var radio = "@ViewBag.radio";
+
+
+        if (radio == "Nombre") {
+            txtNombre.value = "@ViewBag.nombrePaciente";
+            activarNombre();
+        }
+
+
+
+        if (radio == "Cedula") {
+            txtCedula.value = "@ViewBag.cedulaPaciente";
+            activarCedula();
+        }
+
+        if (radio == "Asegurado") {
+            checkAsegurado.value = "@ViewBag.asegurado";
+            activarAsegurado();
+        }
+
+
+
+        function activarNombre() {
+
+            txtNombre.disabled = false;
+            checkAsegurado.disabled = true;
+            txtCedula .disabled = true;
+
+              
+        }
+
+
+          function activarCedula() {
+
+              txtNombre.disabled = true;
+            checkAsegurado.disabled = true;
+            txtCedula .disabled = false;
+
+              
+        }
+
+           function activarAsegurado() {
+
+            txtNombre.disabled = true;
+            checkAsegurado.disabled = false;
+            txtCedula .disabled = true;
+
+              
+            }
+
+
+
+        
+
+      
+    </script>
+
+}
+
+
+
+
+
+
+
+

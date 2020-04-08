@@ -17,7 +17,104 @@ namespace NHospital.Controllers
         // GET: Cita
         public ActionResult Index()
         {
-            var citas = db.Citas.Include(c => c.Medico).Include(c => c.Paciente);
+
+            ViewBag.DateError = false;
+            ViewBag.CodigoPacienteError = false;
+            ViewBag.CodigoMedicoError = false;
+
+            var citas = db.Cita.Include(c => c.Medico).Include(c => c.Paciente);
+
+            string radio = Request.Form["radio"];
+
+
+
+            if (radio == null)
+            {
+                return View(citas.ToList());
+            }
+
+
+            ViewBag.radio = radio;
+
+            if (radio == "Paciente")
+            {
+
+                try
+                {
+                    int codigoPaciente = int.Parse(Request.Form["paciente"]);
+
+
+
+                    ViewBag.codigoPaciente = codigoPaciente;
+
+                    var citasPorPacientes = from cita in citas
+                                            where cita.IdPaciente == codigoPaciente
+                                            select cita;
+
+                    return (View(citasPorPacientes));
+                }
+                catch (System.FormatException)
+                {
+                    ViewBag.CodigoPacienteError = true;
+                    return View(citas);
+                }
+
+               
+            }
+
+            if (radio == "Medico")
+            {
+                try
+                {
+                    int codigoMedico = int.Parse(Request.Form["medico"]);
+
+                    ViewBag.codigoMedico = codigoMedico;
+
+                    var citasPorMedico = from cita in citas
+                                         where cita.IdMedico == codigoMedico
+                                         select cita;
+
+                    return (View(citasPorMedico));
+
+                }
+                catch (System.FormatException)
+                {
+                    ViewBag.CodigoMedicoError = true;
+                    return View(citas);
+                }
+
+             
+
+            }
+
+            if (radio == "Fecha")
+            {
+                try
+                {
+                    DateTime fechaCita = Convert.ToDateTime(Request.Form["fecha"]);
+
+                    ViewBag.fechaCita = fechaCita;
+
+                    var citaPorFecha = from cita in citas
+                                       where cita.Fecha == fechaCita
+                                       select cita;
+
+                    return (View(citaPorFecha));
+
+                } catch(System.FormatException ex)
+                {
+                    ViewBag.DateError = true;
+
+                    return View(citas);
+                }
+
+            }
+
+
+
+
+
+
             return View(citas.ToList());
         }
 
@@ -28,7 +125,7 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cita cita = db.Citas.Find(id);
+            Cita cita = db.Cita.Find(id);
             if (cita == null)
             {
                 return HttpNotFound();
@@ -39,8 +136,10 @@ namespace NHospital.Controllers
         // GET: Cita/Create
         public ActionResult Create()
         {
-            ViewBag.IdMedico = new SelectList(db.Medicos, "IdMedico", "Nombre");
-            ViewBag.IdPaciente = new SelectList(db.Pacientes, "IdPaciente", "Nombre");
+            ViewBag.IdMedico = new SelectList(db.Medico, "IdMedico", "Nombre");
+            ViewBag.IdPaciente = new SelectList(db.Paciente, "IdPaciente", "Nombre");
+            ViewBag.PacienteNoExiste = false;
+
             return View();
         }
 
@@ -53,30 +152,45 @@ namespace NHospital.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Citas.Add(cita);
-                db.SaveChanges();
+                db.Cita.Add(cita);
+
+                try
+                {
+                 
+                    db.SaveChanges();
+                }
+                catch(System.Data.Entity.Infrastructure.DbUpdateException){
+                    ViewBag.IdMedico = new SelectList(db.Medico, "IdMedico", "Nombre", cita.IdMedico);
+                    ViewBag.IdPaciente = new SelectList(db.Paciente, "IdPaciente", "Nombre", cita.IdPaciente);
+                    ViewBag.PacienteNoExiste = true;
+                    return View(cita);
+                }
+               
                 return RedirectToAction("Index");
             }
-
-            ViewBag.IdMedico = new SelectList(db.Medicos, "IdMedico", "Nombre", cita.IdMedico);
-            ViewBag.IdPaciente = new SelectList(db.Pacientes, "IdPaciente", "Nombre", cita.IdPaciente);
+            ViewBag.IdMedico = new SelectList(db.Medico, "IdMedico", "Nombre", cita.IdMedico);
+            ViewBag.IdPaciente = new SelectList(db.Paciente, "IdPaciente", "Nombre", cita.IdPaciente);
             return View(cita);
+
         }
 
         // GET: Cita/Edit/5
         public ActionResult Edit(int? id)
         {
+
+            ViewBag.PacienteNoExiste = false;
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cita cita = db.Citas.Find(id);
+            Cita cita = db.Cita.Find(id);
             if (cita == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.IdMedico = new SelectList(db.Medicos, "IdMedico", "Nombre", cita.IdMedico);
-            ViewBag.IdPaciente = new SelectList(db.Pacientes, "IdPaciente", "Nombre", cita.IdPaciente);
+            ViewBag.IdMedico = new SelectList(db.Medico, "IdMedico", "Nombre", cita.IdMedico);
+            ViewBag.IdPaciente = new SelectList(db.Paciente, "IdPaciente", "Nombre", cita.IdPaciente);
             return View(cita);
         }
 
@@ -90,11 +204,25 @@ namespace NHospital.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(cita).State = EntityState.Modified;
-                db.SaveChanges();
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (System.Data.Entity.Infrastructure.DbUpdateException)
+                {
+                    ViewBag.PacienteNoExiste = true;
+                    ViewBag.IdMedico = new SelectList(db.Medico, "IdMedico", "Nombre", cita.IdMedico);
+                    ViewBag.IdPaciente = new SelectList(db.Paciente, "IdPaciente", "Nombre", cita.IdPaciente);
+                    return View(cita);
+
+                }
+
+                
                 return RedirectToAction("Index");
             }
-            ViewBag.IdMedico = new SelectList(db.Medicos, "IdMedico", "Nombre", cita.IdMedico);
-            ViewBag.IdPaciente = new SelectList(db.Pacientes, "IdPaciente", "Nombre", cita.IdPaciente);
+            ViewBag.IdMedico = new SelectList(db.Medico, "IdMedico", "Nombre", cita.IdMedico);
+            ViewBag.IdPaciente = new SelectList(db.Paciente, "IdPaciente", "Nombre", cita.IdPaciente);
             return View(cita);
         }
 
@@ -105,7 +233,7 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cita cita = db.Citas.Find(id);
+            Cita cita = db.Cita.Find(id);
             if (cita == null)
             {
                 return HttpNotFound();
@@ -118,8 +246,8 @@ namespace NHospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Cita cita = db.Citas.Find(id);
-            db.Citas.Remove(cita);
+            Cita cita = db.Cita.Find(id);
+            db.Cita.Remove(cita);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

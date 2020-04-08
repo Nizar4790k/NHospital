@@ -4,42 +4,148 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Ingresos</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create") |
+    <input type="button" value="Export to PDF" onclick="exportToPdf();" />
 </p>
-<table class="table">
+<table class="table" id="tablon">
     <tr>
+
         <th>
-            @Html.DisplayNameFor(model => model.Habitacion.Numero)
+            @Html.DisplayName("Codigo de Ingreso")
+        </th>
+
+        <th>
+            @Html.DisplayName("Numero de habitacion")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Paciente.Nombre)
+            @Html.DisplayName("Paciente")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FechaIngreso)
+            @Html.DisplayName("Fecha de ingreso")
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Habitacion.Numero)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Paciente.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FechaIngreso)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.IdIngreso }) |
-            @Html.ActionLink("Details", "Details", new { id=item.IdIngreso }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.IdIngreso })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.IdIngreso)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Habitacion.Numero)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Paciente.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaIngreso)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.IdIngreso }) |
+                @Html.ActionLink("Details", "Details", new { id = item.IdIngreso }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.IdIngreso })
+            </td>
+        </tr>
+    }
 
 </table>
+
+
+@using (Html.BeginForm()) 
+{
+
+    <h2>Buscar por:</h2>
+
+    <br />
+
+
+    <div>
+
+        @Html.RadioButton("radio", "Tipo",true, new { onClick = "activarTipo();" })
+        @Html.Label("Tipo de habitacion")
+        @Html.DropDownList("IdTipo", null, htmlAttributes: new { id = "cmbtipo", @class = "form-control" })
+    </div>
+
+    <div>
+
+
+        @Html.RadioButton("radio", "Fecha", new { onclick = "activarFecha();" })
+
+        @Html.Label("Fecha")
+        @Html.TextBox("Fecha", "", new { disabled = true, id = "fecha", @class = "form-control" })
+        @if (ViewBag.DateError)
+        {
+            @Html.ValidationMessage("Fecha", "La fecha esta en formato incorrecto", new { @class = "text-danger" });
+        }
+
+
+    </div>
+
+    <br />
+
+
+
+    <br />
+
+    <input type="submit" value="Consultar" />
+
+
+
+    <script>
+
+        var cmbTipo = document.getElementById("cmbtipo");
+  
+        var txtFecha = document.getElementById("fecha");
+
+
+
+        var radio = "@ViewBag.radio";
+
+
+        if (radio == "Tipo") {
+            cmbTipo.selectedIndex = "@ViewBag.tipoHabitacion";
+            activarNombre();
+        }
+
+
+
+        if (radio == "Fecha") {
+            txtFecha.value = "@ViewBag.fechaIngreso";
+            activarFecha();
+        }
+
+           
+
+
+
+          function activarFecha() {
+
+              cmbTipo.disabled = true;
+            txtFecha.disabled = false;
+
+
+        }
+
+        function activarTipo() {
+
+             cmbTipo.disabled = false;
+            txtFecha.disabled = true;
+
+
+        }
+
+
+
+
+
+
+
+    </script>
+
+}

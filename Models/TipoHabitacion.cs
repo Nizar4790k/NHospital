@@ -12,7 +12,7 @@ namespace NHospital.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TipoHabitacion()
         {
-            Habitacions = new HashSet<Habitacion>();
+            Habitacion = new HashSet<Habitacion>();
         }
 
         [Key]
@@ -23,6 +23,6 @@ namespace NHospital.Models
         public string Nombre { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Habitacion> Habitacions { get; set; }
+        public virtual ICollection<Habitacion> Habitacion { get; set; }
     }
 }

@@ -10,8 +10,18 @@
     <h4>Ingreso</h4>
     <hr />
     <dl class="dl-horizontal">
+       
+        
         <dt>
-            @Html.DisplayNameFor(model => model.Habitacion.Numero)
+            @Html.DisplayName("Codigo de ingreso")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model =>model.IdIngreso)
+        </dd>
+        
+        <dt>
+            @Html.DisplayName("Numero de habitacion ")
         </dt>
 
         <dd>
@@ -19,7 +29,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Paciente.Nombre)
+            @Html.DisplayName("Paciente")
         </dt>
 
         <dd>
@@ -27,7 +37,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.FechaIngreso)
+            @Html.DisplayName("Fecha y Hora ")
         </dt>
 
         <dd>

@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using NHospital.Models;
+using Rotativa;
 
 namespace NHospital.Controllers
 {
@@ -15,10 +17,102 @@ namespace NHospital.Controllers
         private Models.NHospital db = new Models.NHospital();
 
         // GET: Paciente
+
+         
         public ActionResult Index()
         {
-            return View(db.Pacientes.ToList());
+
+           
+            ViewBag.radio = "";
+
+
+            List<Paciente> listaPacientes = db.Paciente.ToList();
+
+
+
+            string radio = Request.Form["radio"];
+
+
+            if (radio == null)
+            {
+
+                return (View(listaPacientes));
+            }
+
+            ViewBag.radio = radio;
+
+
+            if (radio == "Nombre")
+            {
+                string nombre = Request.Form["nombre"];
+                ViewBag.nombrePaciente = nombre;
+
+
+                var listaPorNombre = from paciente in listaPacientes
+                                     where paciente.Nombre == nombre
+                                     select paciente;
+
+
+                return View(listaPorNombre);
+            }
+            else if (radio == "Asegurado")
+            {
+
+
+                string value = Request.Form["asegurado"];
+                ViewBag.asegurado = value;
+
+
+                bool esAsegurado = value == "true,false";
+
+
+
+
+
+
+                var listaPorAsegurado = from paciente in listaPacientes
+                                        where paciente.Asegurado == esAsegurado
+                                        select paciente;
+
+
+                return View(listaPorAsegurado);
+
+
+            }
+            else if (radio == "Cedula")
+
+            {
+
+                string cedula = Request.Form["cedula"];
+
+                ViewBag.cedulaPaciente = cedula;
+
+
+
+                var listaPorCedula = from paciente in listaPacientes
+                                     where paciente.Cedula == cedula
+                                     select paciente;
+
+                return View(listaPorCedula);
+
+            }
+
+
+            return (View(listaPacientes));
+
+
         }
+
+        
+      
+
+
+       
+
+
+
+
+
 
         // GET: Paciente/Details/5
         public ActionResult Details(int? id)
@@ -27,7 +121,7 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Paciente paciente = db.Pacientes.Find(id);
+            Paciente paciente = db.Paciente.Find(id);
             if (paciente == null)
             {
                 return HttpNotFound();
@@ -50,7 +144,9 @@ namespace NHospital.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Pacientes.Add(paciente);
+                
+
+                db.Paciente.Add(paciente);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -65,7 +161,7 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Paciente paciente = db.Pacientes.Find(id);
+            Paciente paciente = db.Paciente.Find(id);
             if (paciente == null)
             {
                 return HttpNotFound();
@@ -96,7 +192,7 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Paciente paciente = db.Pacientes.Find(id);
+            Paciente paciente = db.Paciente.Find(id);
             if (paciente == null)
             {
                 return HttpNotFound();
@@ -109,8 +205,8 @@ namespace NHospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Paciente paciente = db.Pacientes.Find(id);
-            db.Pacientes.Remove(paciente);
+            Paciente paciente = db.Paciente.Find(id);
+            db.Paciente.Remove(paciente);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

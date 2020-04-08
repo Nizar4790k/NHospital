@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -17,8 +18,26 @@ namespace NHospital.Controllers
         // GET: Habitacion
         public ActionResult Index()
         {
-            var habitacions = db.Habitacions.Include(h => h.TipoHabitacion);
-            return View(habitacions.ToList());
+            var habitacions = db.Habitacion.Include(h => h.TipoHabitacion);
+            List<Habitacion> habitaciones = habitacions.ToList();
+           
+            ViewBag.IdTipo = new SelectList(db.TipoHabitacion, "IdTipo", "Nombre");
+
+            string tipo = Request.Form["IdTipo"];
+
+            if (tipo != null)
+            {
+                int idTipo = int.Parse(tipo);
+
+                ViewBag.tipoSeleccionado = idTipo-1;
+
+                var listaPorTipo = from habitacion in habitaciones
+                                                where habitacion.IdTipo == idTipo
+                                                select habitacion;
+                return (View(listaPorTipo));
+            }
+
+            return View(habitaciones);
         }
 
         // GET: Habitacion/Details/5
@@ -28,7 +47,7 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Habitacion habitacion = db.Habitacions.Find(id);
+            Habitacion habitacion = db.Habitacion.Find(id);
             if (habitacion == null)
             {
                 return HttpNotFound();
@@ -39,7 +58,13 @@ namespace NHospital.Controllers
         // GET: Habitacion/Create
         public ActionResult Create()
         {
-            ViewBag.IdTipo = new SelectList(db.TipoHabitacions, "IdTipo", "Nombre");
+            ViewBag.IdTipo = new SelectList(db.TipoHabitacion, "IdTipo", "Nombre");
+
+           
+
+            ViewBag.HabitacionRepetida = false;  // Condiciones para validacion
+        
+
             return View();
         }
 
@@ -52,28 +77,61 @@ namespace NHospital.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Habitacions.Add(habitacion);
-                db.SaveChanges();
+
+                if (habitacion.Numero < 1)
+                {
+                    ViewBag.NumeroEsMenorQueUno = true;
+                    ViewBag.IdTipo = new SelectList(db.TipoHabitacion, "IdTipo", "Nombre", habitacion.IdTipo);
+                    return View(habitacion);
+
+                }
+
+
+
+
+                db.Habitacion.Add(habitacion);
+
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (System.Data.Entity.Infrastructure.DbUpdateException ex)  // Validando que el numero de habitacion no sea el mismo
+                {
+
+                    ViewBag.HabitacionRepetida = true;
+                    ViewBag.IdTipo = new SelectList(db.TipoHabitacion, "IdTipo", "Nombre", habitacion.IdTipo);
+                    return View(habitacion);
+
+                }
+
+
+
+
+
+
                 return RedirectToAction("Index");
             }
 
-            ViewBag.IdTipo = new SelectList(db.TipoHabitacions, "IdTipo", "Nombre", habitacion.IdTipo);
+            ViewBag.IdTipo = new SelectList(db.TipoHabitacion, "IdTipo", "Nombre", habitacion.IdTipo);
             return View(habitacion);
         }
 
         // GET: Habitacion/Edit/5
         public ActionResult Edit(int? id)
         {
+            ViewBag.HabitacionRepetida = false;  // Condiciones para validacion
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Habitacion habitacion = db.Habitacions.Find(id);
+            Habitacion habitacion = db.Habitacion.Find(id);
             if (habitacion == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.IdTipo = new SelectList(db.TipoHabitacions, "IdTipo", "Nombre", habitacion.IdTipo);
+            ViewBag.IdTipo = new SelectList(db.TipoHabitacion, "IdTipo", "Nombre", habitacion.IdTipo);
             return View(habitacion);
         }
 
@@ -87,10 +145,24 @@ namespace NHospital.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(habitacion).State = EntityState.Modified;
-                db.SaveChanges();
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (System.Data.Entity.Infrastructure.DbUpdateException ex)  // Validando que el numero de habitacion no sea el mismo
+                {
+
+                    ViewBag.HabitacionRepetida = true;
+                    ViewBag.IdTipo = new SelectList(db.TipoHabitacion, "IdTipo", "Nombre", habitacion.IdTipo);
+                    return View(habitacion);
+
+                }
+
+
                 return RedirectToAction("Index");
             }
-            ViewBag.IdTipo = new SelectList(db.TipoHabitacions, "IdTipo", "Nombre", habitacion.IdTipo);
+            ViewBag.IdTipo = new SelectList(db.TipoHabitacion, "IdTipo", "Nombre", habitacion.IdTipo);
             return View(habitacion);
         }
 
@@ -101,7 +173,7 @@ namespace NHospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Habitacion habitacion = db.Habitacions.Find(id);
+            Habitacion habitacion = db.Habitacion.Find(id);
             if (habitacion == null)
             {
                 return HttpNotFound();
@@ -114,8 +186,8 @@ namespace NHospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Habitacion habitacion = db.Habitacions.Find(id);
-            db.Habitacions.Remove(habitacion);
+            Habitacion habitacion = db.Habitacion.Find(id);
+            db.Habitacion.Remove(habitacion);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -128,5 +200,6 @@ namespace NHospital.Controllers
             }
             base.Dispose(disposing);
         }
+
     }
 }

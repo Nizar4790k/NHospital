@@ -1,0 +1,65 @@
+﻿@model NHospital.Models.Alta
+
+@{
+}
+
+<h2>Create2</h2>
+
+@using (Html.BeginForm("Create3","Alta",FormMethod.Post, new { encytpe=true}))
+{
+    <div>
+        <h4>Alta</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayName("Codigo de ingreso")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Ingreso.IdIngreso)
+            </dd>
+
+
+            <dt>
+                @Html.DisplayName("Fecha de ingreso")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Ingreso.FechaIngreso)
+            </dd>
+
+            <dt>
+                @Html.DisplayName("Numero de habitacion")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Ingreso.Habitacion.Numero)
+            </dd>
+
+
+
+            <dt>
+                @Html.DisplayName("Fecha de salida")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.FechaSalida)
+            </dd>
+
+            <dt>
+                @Html.DisplayName("Monto total")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.MontoTotal)
+            </dd>
+
+        </dl>
+    </div>
+
+    <input type="submit" value="Confirmar" class="btn btn-default" />
+
+
+
+
+}

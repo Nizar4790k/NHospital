@@ -12,8 +12,8 @@ namespace NHospital.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Paciente()
         {
-            Citas = new HashSet<Cita>();
-            Ingresoes = new HashSet<Ingreso>();
+            Cita = new HashSet<Cita>();
+            Ingreso = new HashSet<Ingreso>();
         }
 
         [Key]
@@ -28,9 +28,9 @@ namespace NHospital.Models
         public bool Asegurado { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Cita> Citas { get; set; }
+        public virtual ICollection<Cita> Cita { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Ingreso> Ingresoes { get; set; }
+        public virtual ICollection<Ingreso> Ingreso { get; set; }
     }
 }
