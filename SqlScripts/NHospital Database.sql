@@ -66,6 +66,7 @@ MontoTotal decimal(10,4) NOT NULL
 
 
 DROP TABLE ALTA;
+DROP TABLE Ingreso;
 
 
 

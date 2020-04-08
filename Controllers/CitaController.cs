@@ -18,6 +18,67 @@ namespace NHospital.Controllers
         public ActionResult Index()
         {
             var citas = db.Cita.Include(c => c.Medico).Include(c => c.Paciente);
+
+            string radio = Request.Form["radio"];
+
+
+
+            if (radio == null)
+            {
+                return View(citas.ToList());
+            }
+
+
+            ViewBag.radio = radio;
+
+            if (radio == "Paciente")
+            {
+                int codigoPaciente = int.Parse(Request.Form["paciente"]);
+
+            
+
+                ViewBag.codigoPaciente = codigoPaciente;
+
+                var citasPorPacientes = from cita in citas
+                                        where cita.IdPaciente == codigoPaciente
+                                        select cita;
+
+                return (View(citasPorPacientes));
+            }
+
+            if (radio == "Medico")
+            {
+                int codigoMedico = int.Parse(Request.Form["medico"]);
+
+                ViewBag.codigoMedico = codigoMedico;
+
+                var citasPorMedico = from cita in citas
+                                        where cita.IdMedico == codigoMedico
+                                        select cita;
+
+                return (View(citasPorMedico));
+
+            }
+
+            if (radio == "Fecha")
+            {
+                DateTime fechaCita = Convert.ToDateTime(Request.Form["fecha"]);
+
+                ViewBag.fechaCita = fechaCita;
+
+                var citaPorFecha = from cita in citas
+                                     where cita.Fecha == fechaCita
+                                     select cita;
+
+                return (View(citaPorFecha));
+
+            }
+
+
+
+
+
+
             return View(citas.ToList());
         }
 
