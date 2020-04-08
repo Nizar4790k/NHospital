@@ -78,7 +78,12 @@
         @Html.RadioButton("radio", "Fecha", new { onclick = "activarFecha();" })
 
         @Html.Label("Fecha")
-        @Html.TextBox("Fecha", "", new { disabled=true,id = "fecha", @class = "form-control" })
+        @Html.TextBox("Fecha", "", new { disabled = true, id = "fecha", @class = "form-control" })
+        @if (ViewBag.DateError)
+        {
+            @Html.ValidationMessage("Fecha", "La fecha esta en formato incorrecto", new { @class = "text-danger" });
+        }
+
 
     </div>
 

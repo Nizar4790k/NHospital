@@ -70,7 +70,7 @@
 </table>
 
 
-@using (Html.BeginForm()) // VALIDAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+@using (Html.BeginForm()) 
 {
 
     <h2>Buscar por:</h2>
@@ -85,6 +85,13 @@
 
         @Html.Label("Fecha de salida")
         @Html.TextBox("fecha", "", new { id = "fecha", @class = "form-control" })
+
+        @if (ViewBag.DateError)
+        {
+            @Html.ValidationMessage("fecha", "La fecha esta en formato incorrecto", new { @class = "text-danger" });
+        }
+
+
     </div>
 
     <br />
@@ -96,6 +103,12 @@
         @Html.RadioButton("radio", "Paciente", new { onClick = "activarPaciente();" })
         @Html.Label("Codigo de paciente")
         @Html.TextBox("paciente", "", new { disabled = true, id = "paciente", @class = "form-control" })
+
+        @if (ViewBag.CodigoPacienteError)
+        {
+            @Html.ValidationMessage("paciente", "El valor introducido no es valido", new { @class = "text-danger" });
+        }
+
 
     </div>
 

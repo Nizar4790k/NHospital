@@ -22,6 +22,11 @@ namespace NHospital.Controllers
         // GET: Alta
         public ActionResult Index()
         {
+
+            ViewBag.DateError = false;
+            ViewBag.CodigoPacienteError = false;
+
+
             var altas = db.Alta.Include(a => a.Ingreso);
           
 
@@ -37,27 +42,47 @@ namespace NHospital.Controllers
 
             if (radio == "Fecha")
             {
-                DateTime fechaSalida = Convert.ToDateTime(Request.Form["fecha"]);
-                ViewBag.fechaSalida = fechaSalida;
+                try
+                {
+                    DateTime fechaSalida = Convert.ToDateTime(Request.Form["fecha"]);
+                    ViewBag.fechaSalida = fechaSalida;
 
-                var listaPorFecha = from alta in altas
-                                    where alta.FechaSalida == fechaSalida
-                                    select alta;
+                    var listaPorFecha = from alta in altas
+                                        where alta.FechaSalida == fechaSalida
+                                        select alta;
 
-                return (View(listaPorFecha));
+                    return (View(listaPorFecha));
+                }
+                catch(System.FormatException ex)
+                {
+                    ViewBag.DateError = true;
+
+                    return View(altas);
+                }
+               
             }
 
 
             if (radio == "Paciente")
             {
-                int codigoPaciente = Convert.ToInt32(Request.Form["paciente"]);
-                ViewBag.codigoPaciente = codigoPaciente;
 
-                var listaPorPaciente = from alta in altas
-                                       where alta.Ingreso.IdPaciente == codigoPaciente
-                                    select alta;
+                try
+                {
+                    int codigoPaciente = Convert.ToInt32(Request.Form["paciente"]);
+                    ViewBag.codigoPaciente = codigoPaciente;
 
-                return (View(listaPorPaciente));
+                    var listaPorPaciente = from alta in altas
+                                           where alta.Ingreso.IdPaciente == codigoPaciente
+                                           select alta;
+
+                    return (View(listaPorPaciente));
+                }
+                catch (System.FormatException)
+                {
+                    ViewBag.CodigoPacienteError = true;
+                    return View(altas);
+                }
+               
             }
 
             return View(altas.ToList());

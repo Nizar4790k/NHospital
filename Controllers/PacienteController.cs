@@ -144,6 +144,8 @@ namespace NHospital.Controllers
         {
             if (ModelState.IsValid)
             {
+                
+
                 db.Paciente.Add(paciente);
                 db.SaveChanges();
                 return RedirectToAction("Index");

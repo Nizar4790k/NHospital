@@ -17,6 +17,8 @@ namespace NHospital.Controllers
         // GET: Ingreso
         public ActionResult Index()
         {
+            ViewBag.DateError = false;
+
             ViewBag.IdTipo = new SelectList(db.TipoHabitacion, "IdTipo", "Nombre");
             var ingresos = db.Ingreso.Include(i => i.Habitacion).Include(i => i.Paciente);
 
@@ -45,15 +47,27 @@ namespace NHospital.Controllers
 
             if (radio == "Fecha")
             {
-                DateTime fechaIngreso = Convert.ToDateTime(Request.Form["Fecha"]);
 
-                ViewBag.fechaIngreso = fechaIngreso;
+                try
+                {
+                    DateTime fechaIngreso = Convert.ToDateTime(Request.Form["Fecha"]);
 
-                var ingresosPorFecha = from ingreso in ingresos
-                                                where ingreso.FechaIngreso == fechaIngreso
-                                                select ingreso;
+                    ViewBag.fechaIngreso = fechaIngreso;
 
-                return View(ingresosPorFecha.ToList());
+                    var ingresosPorFecha = from ingreso in ingresos
+                                           where ingreso.FechaIngreso == fechaIngreso
+                                           select ingreso;
+
+                    return View(ingresosPorFecha.ToList());
+                }
+                catch(FormatException ex)
+                {
+                    ViewBag.DateError = true;
+                    return View(ingresos.ToList());
+                  
+                }
+
+                
 
             }
 
