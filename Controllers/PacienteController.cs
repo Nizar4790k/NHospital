@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using NHospital.Models;
+using Rotativa;
 
 namespace NHospital.Controllers
 {
@@ -24,10 +25,15 @@ namespace NHospital.Controllers
             ViewBag.textNombreActivo = false;
             ViewBag.textCedulaActivo = false;
             ViewBag.checkAseguradoActivo = false;
+            ViewBag.radio = "";
+
 
             List<Paciente> listaPacientes = db.Paciente.ToList();
 
+
+
             string radio = Request.Form["radio"];
+
 
             if (radio == null)
             {
@@ -35,11 +41,14 @@ namespace NHospital.Controllers
                 return (View(listaPacientes));
             }
 
+            ViewBag.radio = radio;
 
 
             if (radio == "Nombre")
             {
                 string nombre = Request.Form["nombre"];
+                ViewBag.nombrePaciente = nombre;
+
 
                 var listaPorNombre = from paciente in listaPacientes
                                      where paciente.Nombre == nombre
@@ -51,12 +60,14 @@ namespace NHospital.Controllers
             else if (radio == "Asegurado")
             {
 
+
                 string value = Request.Form["asegurado"];
+                ViewBag.asegurado = value;
 
 
                 bool esAsegurado = value == "true,false";
 
-                
+
 
 
 
@@ -76,6 +87,8 @@ namespace NHospital.Controllers
 
                 string cedula = Request.Form["cedula"];
 
+                ViewBag.cedulaPaciente = cedula;
+
 
 
                 var listaPorCedula = from paciente in listaPacientes
@@ -92,6 +105,11 @@ namespace NHospital.Controllers
 
         }
 
+        
+      
+
+
+       
 
 
 

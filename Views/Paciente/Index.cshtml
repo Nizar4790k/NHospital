@@ -7,9 +7,11 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create") |
+    <input type="button" value="Export to PDF" onclick="exportToPdf();" />
+    
 </p>
-<table class="table">
+<table class="table" id="tablon">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Nombre)
@@ -59,9 +61,10 @@
     <div>
       
         
-        @Html.RadioButton("radio","Nombre",new { onclick="activarNombre();"})
+        @Html.RadioButton("radio","Nombre",true,new { onclick="activarNombre();"})
+   
         @Html.Label("Nombre")
-        @Html.TextBox("nombre","",new {disabled=true,id="nombre", @class="form-control"})
+        @Html.TextBox("nombre","",new {id="nombre", @class="form-control"})
     </div>
 
     <br />
@@ -92,19 +95,43 @@
     <br />
 
     <input type="submit" value="Consultar" />
+    
 
 
     <script>
 
+        var txtNombre = document.getElementById("nombre");
+        var txtCedula = document.getElementById("cedula");
+        var checkAsegurado = document.getElementById("asegurado");
+        
+
+        var radio = "@ViewBag.radio";
 
 
-       
+        if (radio == "Nombre") {
+            txtNombre.value = "@ViewBag.nombrePaciente";
+            activarNombre();
+        }
+
+
+
+        if (radio == "Cedula") {
+            txtCedula.value = "@ViewBag.cedulaPaciente";
+            activarCedula();
+        }
+
+        if (radio == "Asegurado") {
+            checkAsegurado.value = "@ViewBag.asegurado";
+            activarAsegurado();
+        }
+
+
 
         function activarNombre() {
 
-            document.getElementById("nombre").disabled = false;
-            document.getElementById("asegurado").disabled = true;
-            document.getElementById("cedula").disabled = true;
+            txtNombre.disabled = false;
+            checkAsegurado.disabled = true;
+            txtCedula .disabled = true;
 
               
         }
@@ -112,18 +139,18 @@
 
           function activarCedula() {
 
-            document.getElementById("nombre").disabled = true;
-            document.getElementById("asegurado").disabled = true;
-            document.getElementById("cedula").disabled = false;
+              txtNombre.disabled = true;
+            checkAsegurado.disabled = true;
+            txtCedula .disabled = false;
 
               
         }
 
            function activarAsegurado() {
 
-            document.getElementById("nombre").disabled = true;
-            document.getElementById("asegurado").disabled = false;
-            document.getElementById("cedula").disabled = true;
+            txtNombre.disabled = true;
+            checkAsegurado.disabled = false;
+            txtCedula .disabled = true;
 
               
             }

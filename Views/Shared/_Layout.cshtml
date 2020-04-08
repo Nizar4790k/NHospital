@@ -38,5 +38,34 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+
+    <script src="~/Content/html2pdf.bundle.min.js"></script>
+
+    <script>
+
+    function exportToPdf() {
+            var element = document.getElementById('tablon');
+            var opt = {
+                margin: 1,
+                filename: 'Index.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save();
+
+        }
+
+    </script>
+
+
 </body>
+
+
+
+
+
+
 </html>

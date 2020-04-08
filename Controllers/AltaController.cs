@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Diagnostics;
 using NHospital.Models;
+using Rotativa;
 
 namespace NHospital.Controllers
 {
@@ -24,6 +25,8 @@ namespace NHospital.Controllers
             var altas = db.Alta.Include(a => a.Ingreso);
             return View(altas.ToList());
         }
+
+       
 
         // GET: Alta/Details/5
         public ActionResult Details(int? id)
