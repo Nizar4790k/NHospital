@@ -7,10 +7,11 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create") |
+    <input type="button" value="Export to PDF" onclick="exportToPdf();" />
 </p>
-<table class="table">
-    <tr>
+<table class="table" id="tablon">
+    <tr>    
         <th>
             @Html.DisplayName("Medico")
         </th>
@@ -23,23 +24,139 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Medico.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Paciente.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Fecha)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.IdCita }) |
-            @Html.ActionLink("Details", "Details", new { id=item.IdCita }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.IdCita })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Medico.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Paciente.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fecha)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.IdCita }) |
+                @Html.ActionLink("Details", "Details", new { id = item.IdCita }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.IdCita })
+            </td>
+        </tr>
+    }
 
 </table>
+
+
+@using (Html.BeginForm()) // VALIDAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+{
+
+    <h2>Buscar por:</h2>
+
+    <br />
+
+    <div>
+
+
+        @Html.RadioButton("radio", "Fecha", true, new { onclick = "activarFecha();" })
+
+        @Html.Label("Fecha")
+        @Html.TextBox("Fecha", "", new { id = "fecha", @class = "form-control" })
+    </div>
+
+    <br />
+
+
+    <div>
+
+
+        @Html.RadioButton("radio", "Paciente", new { onClick = "activarPaciente();" })
+        @Html.Label("Codigo de paciente")
+        @Html.TextBox("paciente", "", new { disabled = true, id = "paciente", @class = "form-control" })
+
+    </div>
+
+    <div>
+
+
+        @Html.RadioButton("radio", "Medico", new { onClick = "activarMedico();" })
+        @Html.Label("Codigo de Medico")
+        @Html.TextBox("medico", "", new { disabled = true, id = "medico", @class = "form-control" })
+
+    </div>
+
+    <br />
+
+
+
+    <br />
+
+    <input type="submit" value="Consultar" />
+
+
+
+    <script>
+
+        var txtPaciente = document.getElementById("paciente");
+        var txtMedico = document.getElementById("medico");
+        var txtFecha = document.getElementById("fecha");
+
+
+
+        var radio = "@ViewBag.radio";
+
+
+        if (radio == "Paciente") {
+            txtPaciente.value = "@ViewBag.codigoPaciente";
+            activarNombre();
+        }
+
+
+
+        if (radio == "Fecha") {
+            txtFecha.value = "@ViewBag.fechaCita";
+            activarFecha();
+        }
+
+            if (radio == "Medico") {
+            txtMedico.value = "@ViewBag.codigoMedico";
+            activarMedico();
+        }
+
+
+        function activarPaciente() {
+
+            txtPaciente.disabled = false;
+            txtMedico.disabled = true;
+            txtFecha.disabled = true;
+
+
+        }
+
+
+          function activarFecha() {
+
+            txtPaciente.disabled = true;
+            txtMedico.disabled = true;
+            txtFecha.disabled = false;
+
+
+        }
+
+        function activarMedico() {
+
+            txtPaciente.disabled = true;
+            txtMedico.disabled = false;
+            txtFecha.disabled = true;
+
+
+        }
+
+
+
+
+
+
+
+    </script>
+
+}

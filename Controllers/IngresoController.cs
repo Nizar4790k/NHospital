@@ -17,8 +17,50 @@ namespace NHospital.Controllers
         // GET: Ingreso
         public ActionResult Index()
         {
-            var ingresoes = db.Ingreso.Include(i => i.Habitacion).Include(i => i.Paciente);
-            return View(ingresoes.ToList());
+            ViewBag.IdTipo = new SelectList(db.TipoHabitacion, "IdTipo", "Nombre");
+            var ingresos = db.Ingreso.Include(i => i.Habitacion).Include(i => i.Paciente);
+
+           string radio = Request.Form["radio"];
+
+            if (radio == null)
+            {
+                return View(ingresos.ToList());
+            }
+
+            ViewBag.radio = radio;
+
+            if (radio == "Tipo")
+            {
+                int idTipo = int.Parse(Request.Form["IdTipo"]);
+
+                ViewBag.tipoHabitacion = idTipo-1;
+
+                var ingresosPorTipoHabitacion = from ingreso in ingresos
+                                      where ingreso.Habitacion.IdTipo == idTipo
+                                      select ingreso;
+
+                return View(ingresosPorTipoHabitacion.ToList());
+                                     
+            }
+
+            if (radio == "Fecha")
+            {
+                DateTime fechaIngreso = Convert.ToDateTime(Request.Form["Fecha"]);
+
+                ViewBag.fechaIngreso = fechaIngreso;
+
+                var ingresosPorFecha = from ingreso in ingresos
+                                                where ingreso.FechaIngreso == fechaIngreso
+                                                select ingreso;
+
+                return View(ingresosPorFecha.ToList());
+
+            }
+
+
+
+
+            return View(ingresos.ToList());
         }
 
         // GET: Ingreso/Details/5

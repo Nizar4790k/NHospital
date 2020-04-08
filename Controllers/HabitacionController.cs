@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -18,7 +19,25 @@ namespace NHospital.Controllers
         public ActionResult Index()
         {
             var habitacions = db.Habitacion.Include(h => h.TipoHabitacion);
-            return View(habitacions.ToList());
+            List<Habitacion> habitaciones = habitacions.ToList();
+           
+            ViewBag.IdTipo = new SelectList(db.TipoHabitacion, "IdTipo", "Nombre");
+
+            string tipo = Request.Form["IdTipo"];
+
+            if (tipo != null)
+            {
+                int idTipo = int.Parse(tipo);
+
+                ViewBag.tipoSeleccionado = idTipo-1;
+
+                var listaPorTipo = from habitacion in habitaciones
+                                                where habitacion.IdTipo == idTipo
+                                                select habitacion;
+                return (View(listaPorTipo));
+            }
+
+            return View(habitaciones);
         }
 
         // GET: Habitacion/Details/5
@@ -40,6 +59,8 @@ namespace NHospital.Controllers
         public ActionResult Create()
         {
             ViewBag.IdTipo = new SelectList(db.TipoHabitacion, "IdTipo", "Nombre");
+
+           
 
             ViewBag.HabitacionRepetida = false;  // Condiciones para validacion
         

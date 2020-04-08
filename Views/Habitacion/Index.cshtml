@@ -7,9 +7,10 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create")|
+    <input type="button" value="Export to PDF" onclick="exportToPdf();" />
 </p>
-<table class="table">
+<table class="table" id="tablon">
     <tr>
         <th>
             @Html.DisplayName("Tipo")
@@ -23,23 +24,77 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.TipoHabitacion.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Numero)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Precio)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.IdHabitacion }) |
-            @Html.ActionLink("Details", "Details", new { id=item.IdHabitacion }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.IdHabitacion })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoHabitacion.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Numero)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Precio)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.IdHabitacion }) |
+                @Html.ActionLink("Details", "Details", new { id = item.IdHabitacion }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.IdHabitacion })
+            </td>
+        </tr>
+    }
+
 
 </table>
+
+
+@using (Html.BeginForm())
+{
+
+    <h2>Buscar por:</h2>
+
+    <br />
+
+    <div>
+
+
+       
+        
+       
+        @Html.Label("Tipo")
+        @Html.DropDownList("IdTipo",null, htmlAttributes: new {id="cmbtipo" ,@class = "form-control" })
+    </div>
+
+    <br />
+
+
+
+
+    <br />
+
+    <input type="submit" value="Consultar" />
+
+
+
+    <script>
+
+        var cmbTipo = document.getElementById("cmbtipo");
+
+        cmbTipo.selectedIndex = "@ViewBag.tipoSeleccionado";
+
+
+        
+        
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+}

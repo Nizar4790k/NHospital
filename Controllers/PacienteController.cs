@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using NHospital.Models;
+using Rotativa;
 
 namespace NHospital.Controllers
 {
@@ -15,10 +17,102 @@ namespace NHospital.Controllers
         private Models.NHospital db = new Models.NHospital();
 
         // GET: Paciente
+
+         
         public ActionResult Index()
         {
-            return View(db.Paciente.ToList());
+
+           
+            ViewBag.radio = "";
+
+
+            List<Paciente> listaPacientes = db.Paciente.ToList();
+
+
+
+            string radio = Request.Form["radio"];
+
+
+            if (radio == null)
+            {
+
+                return (View(listaPacientes));
+            }
+
+            ViewBag.radio = radio;
+
+
+            if (radio == "Nombre")
+            {
+                string nombre = Request.Form["nombre"];
+                ViewBag.nombrePaciente = nombre;
+
+
+                var listaPorNombre = from paciente in listaPacientes
+                                     where paciente.Nombre == nombre
+                                     select paciente;
+
+
+                return View(listaPorNombre);
+            }
+            else if (radio == "Asegurado")
+            {
+
+
+                string value = Request.Form["asegurado"];
+                ViewBag.asegurado = value;
+
+
+                bool esAsegurado = value == "true,false";
+
+
+
+
+
+
+                var listaPorAsegurado = from paciente in listaPacientes
+                                        where paciente.Asegurado == esAsegurado
+                                        select paciente;
+
+
+                return View(listaPorAsegurado);
+
+
+            }
+            else if (radio == "Cedula")
+
+            {
+
+                string cedula = Request.Form["cedula"];
+
+                ViewBag.cedulaPaciente = cedula;
+
+
+
+                var listaPorCedula = from paciente in listaPacientes
+                                     where paciente.Cedula == cedula
+                                     select paciente;
+
+                return View(listaPorCedula);
+
+            }
+
+
+            return (View(listaPacientes));
+
+
         }
+
+        
+      
+
+
+       
+
+
+
+
+
 
         // GET: Paciente/Details/5
         public ActionResult Details(int? id)
