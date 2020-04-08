@@ -30,6 +30,13 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Cedula, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Cedula, "", new { @class = "text-danger" })
+                @if (ViewBag.CedulaDuplicada)
+                {
+                    @Html.ValidationMessage("Cedula", "La cedula que acaba de ingresar esta duplicada", new { @class = "text-danger" })
+                }
+
+
+
             </div>
         </div>
 

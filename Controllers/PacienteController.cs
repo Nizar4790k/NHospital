@@ -132,6 +132,8 @@ namespace NHospital.Controllers
         // GET: Paciente/Create
         public ActionResult Create()
         {
+            ViewBag.CedulaDuplicada = false;
+
             return View();
         }
 
@@ -142,12 +144,29 @@ namespace NHospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IdPaciente,Nombre,Cedula,Asegurado")] Paciente paciente)
         {
+
+            ViewBag.CedulaDuplicada = false;
+
             if (ModelState.IsValid)
             {
                 
 
-                db.Paciente.Add(paciente);
-                db.SaveChanges();
+               
+
+                try
+                {
+                    db.Paciente.Add(paciente);
+                    db.SaveChanges();
+
+                }
+                catch (System.Data.Entity.Infrastructure.DbUpdateException ex)
+                {
+                    ViewBag.CedulaDuplicada = true;
+                    return View(paciente);
+
+                }
+
+            
                 return RedirectToAction("Index");
             }
 
@@ -157,6 +176,9 @@ namespace NHospital.Controllers
         // GET: Paciente/Edit/5
         public ActionResult Edit(int? id)
         {
+
+            ViewBag.CedulaDuplicada = false;
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -176,9 +198,26 @@ namespace NHospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "IdPaciente,Nombre,Cedula,Asegurado")] Paciente paciente)
         {
+            ViewBag.CedulaDuplicada = false; 
+
             if (ModelState.IsValid)
             {
                 db.Entry(paciente).State = EntityState.Modified;
+
+
+                try
+                {
+               
+                    db.SaveChanges();
+
+                }
+                catch (System.Data.Entity.Infrastructure.DbUpdateException ex)
+                {
+                    ViewBag.CedulaDuplicada = true;
+                    return View(paciente);
+
+                }
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
