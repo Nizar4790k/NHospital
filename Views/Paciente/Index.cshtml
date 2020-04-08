@@ -59,19 +59,22 @@
     <div>
       
         
-        @Html.RadioButton("radio","Nombre",false,new {id="radNombre", onclick="activarNombre();"})
+        @Html.RadioButton("radio","Nombre",true,new { onclick="activarNombre();"})
         @Html.Label("Nombre")
-        @Html.TextBox("nombre",null,new {disabled=true,id="nombre", @class="form-control"})
+        @Html.TextBox("nombre","",new {id="nombre", @class="form-control"})
     </div>
 
     <br />
    
 
     <div>
-        @Html.RadioButton("radio", "Cedula", false, new { onclick = "activarCedula();" })
+        
+        
 
+
+        @Html.RadioButton("radio","Cedula",new { onClick="activarCedula();"})
         @Html.Label("Cedula")
-        @Html.TextBox("cedula", null, new {disabled=true, id = "cedula", @class = "form-control" })
+        @Html.TextBox("cedula", "", new {disabled=true, id = "cedula", @class = "form-control" })
        
     </div>
 
@@ -80,9 +83,9 @@
 
 
     <div>
-        @Html.RadioButton("radio", "Asegurado",false, new { onclick = "activarAsegurado();" })
+        @Html.RadioButton("radio", "Asegurado", new { onclick = "activarAsegurado();" })
         @Html.Label("Asegurado")
-        @Html.CheckBox("cedula", new {disabled=true, id = "asegurado" })
+        @Html.CheckBox("asegurado", new {disabled=true, id = "asegurado" })
        
     </div>
 

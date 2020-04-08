@@ -30,16 +30,25 @@ namespace NHospital.Controllers
             List<Paciente> listaPacientes = db.Paciente.ToList();
 
             string radio = Request.Form["radio"];
-            
-
-            
 
 
+         
+
+            string cedula = Request.Form["cedula"];
+
+
+
+                var listaPorCedula = from paciente in listaPacientes
+                                     where paciente.Cedula == cedula
+                                     select paciente;
+
+
+            return View(listaPorCedula);
+
+            /*
             if (radio == "Nombre")
             {
-
-            }
-            string nombre = Request.Form["nombre"];
+                string nombre = Request.Form["nombre"];
 
                 var listaPorNombre = from paciente in listaPacientes
                                      where paciente.Nombre == nombre
@@ -47,25 +56,10 @@ namespace NHospital.Controllers
 
 
                 return View(listaPorNombre);
-
-               
-           
-            
-            /*
-            
-            else if (radio == "Cedula")
+            }
+            else if (radio == "Asegurado")
             {
-                string cedula = Request.Form["cedula"];
-
-                var listaPorCedula = from paciente in listaPacientes
-                                     where paciente.Cedula == cedula
-                                     select paciente;
-
-
-                return View(listaPorCedula);
-            } else if (radio == "Asegurado")
-            {
-               bool esAsegurado = Request.Form["asegurado"] == "on";
+                bool esAsegurado = Request.Form["asegurado"] == "on";
 
                 var listaPorAsegurado = from paciente in listaPacientes
                                         where paciente.Asegurado == esAsegurado
@@ -73,41 +67,56 @@ namespace NHospital.Controllers
 
 
                 return View(listaPorAsegurado);
+             
 
+            }else if(radio== "Cedula")
+            
+            {
+                
             }
 
-            */
-          
+               */
 
 
-            /*else if (value == "Cedula")
+
+            /*
+
+
+      
+
+
+
+
+
+        else if (value == "Cedula")
+        {
+            value = Request.Form["cedula"];
+            return View(listaPacientes.Where(a => a.Cedula == value).ToList());
+        }
+        else if (value == "Asegurado")
+        {
+            value = Request.Form["asegurado"];
+
+            if (value != null && value == "on")
             {
-                value = Request.Form["cedula"];
-                return View(listaPacientes.Where(a => a.Cedula == value).ToList());
-            }
-            else if (value == "Asegurado")
-            {
-                value = Request.Form["asegurado"];
-
-                if (value != null && value == "on")
-                {
-                    return View(listaPacientes.Where(a => a.Asegurado == true));
-                }
-                else
-                {
-                    return View(listaPacientes.Where(a => a.Asegurado == false));
-                }
-
+                return View(listaPacientes.Where(a => a.Asegurado == true));
             }
             else
             {
-               
-            } */
+                return View(listaPacientes.Where(a => a.Asegurado == false));
+            }
 
-            return View(listaPacientes);
+        }
+        else
+        {
+
+        } 
+        */
+
+            // return View(listaPacientes);
         }
 
-       
+
 
         // GET: Paciente/Details/5
         public ActionResult Details(int? id)

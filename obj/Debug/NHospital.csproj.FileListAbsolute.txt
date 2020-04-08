@@ -79,7 +79,6 @@ D:\Documentos\Visual Studio Projects\NHospital\bin\Microsoft.CodeDom.Providers.D
 D:\Documentos\Visual Studio Projects\NHospital\obj\Debug\NHospital.csproj.CopyComplete
 D:\Documentos\Visual Studio Projects\NHospital\obj\Debug\NHospital.dll
 D:\Documentos\Visual Studio Projects\NHospital\obj\Debug\NHospital.pdb
-D:\Documentos\Visual Studio Projects\NHospital\obj\Debug\NHospital.csprojAssemblyReference.cache
 E:\Repo\NHospital\bin\NHospital.dll.config
 E:\Repo\NHospital\bin\NHospital.dll
 E:\Repo\NHospital\bin\NHospital.pdb
@@ -162,3 +161,4 @@ E:\Repo\NHospital\obj\Debug\NHospital.csprojAssemblyReference.cache
 E:\Repo\NHospital\obj\Debug\NHospital.csproj.CopyComplete
 E:\Repo\NHospital\obj\Debug\NHospital.dll
 E:\Repo\NHospital\obj\Debug\NHospital.pdb
+D:\Documentos\Visual Studio Projects\NHospital\obj\Debug\NHospital.csprojAssemblyReference.cache
