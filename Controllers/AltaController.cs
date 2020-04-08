@@ -23,6 +23,43 @@ namespace NHospital.Controllers
         public ActionResult Index()
         {
             var altas = db.Alta.Include(a => a.Ingreso);
+          
+
+            string radio = Request.Form["radio"];
+
+
+            if (radio == null)
+            {
+                return View(altas.ToList());
+            }
+
+            ViewBag.radio = radio;
+
+            if (radio == "Fecha")
+            {
+                DateTime fechaSalida = Convert.ToDateTime(Request.Form["fecha"]);
+                ViewBag.fechaSalida = fechaSalida;
+
+                var listaPorFecha = from alta in altas
+                                    where alta.FechaSalida == fechaSalida
+                                    select alta;
+
+                return (View(listaPorFecha));
+            }
+
+
+            if (radio == "Paciente")
+            {
+                int codigoPaciente = Convert.ToInt32(Request.Form["paciente"]);
+                ViewBag.codigoPaciente = codigoPaciente;
+
+                var listaPorPaciente = from alta in altas
+                                       where alta.Ingreso.IdPaciente == codigoPaciente
+                                    select alta;
+
+                return (View(listaPorPaciente));
+            }
+
             return View(altas.ToList());
         }
 
