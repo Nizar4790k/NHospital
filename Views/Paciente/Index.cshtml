@@ -14,6 +14,10 @@
 <table class="table" id="tablon">
     <tr>
         <th>
+            @Html.DisplayName("Codigo de Paciente")
+        </th>
+
+        <th>
             @Html.DisplayNameFor(model => model.Nombre)
         </th>
         <th>
@@ -27,22 +31,28 @@
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cedula)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Asegurado)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.IdPaciente }) |
-                @Html.ActionLink("Details", "Details", new { id = item.IdPaciente }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.IdPaciente })
-            </td>
-        </tr>
+<tr>
+
+    <td>
+        @Html.DisplayFor(modelItem => item.IdPaciente)
+    </td>
+
+    <td>
+        @Html.DisplayFor(modelItem => item.Nombre)
+    </td>
+
+    <td>
+        @Html.DisplayFor(modelItem => item.Cedula)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Asegurado)
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.IdPaciente }) |
+        @Html.ActionLink("Details", "Details", new { id = item.IdPaciente }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.IdPaciente })
+    </td>
+</tr>
     }
 
 </table>

@@ -11,6 +11,15 @@
     <h4>Paciente</h4>
     <hr />
     <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayName("Codigo de Paciente")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IdPaciente)
+        </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.Nombre)
         </dt>
