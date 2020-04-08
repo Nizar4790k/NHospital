@@ -17,6 +17,11 @@ namespace NHospital.Controllers
         // GET: Cita
         public ActionResult Index()
         {
+
+            ViewBag.DateError = false;
+            ViewBag.CodigoPacienteError = false;
+            ViewBag.CodigoMedicoError = false;
+
             var citas = db.Cita.Include(c => c.Medico).Include(c => c.Paciente);
 
             string radio = Request.Form["radio"];
@@ -33,44 +38,75 @@ namespace NHospital.Controllers
 
             if (radio == "Paciente")
             {
-                int codigoPaciente = int.Parse(Request.Form["paciente"]);
 
-            
+                try
+                {
+                    int codigoPaciente = int.Parse(Request.Form["paciente"]);
 
-                ViewBag.codigoPaciente = codigoPaciente;
 
-                var citasPorPacientes = from cita in citas
-                                        where cita.IdPaciente == codigoPaciente
-                                        select cita;
 
-                return (View(citasPorPacientes));
+                    ViewBag.codigoPaciente = codigoPaciente;
+
+                    var citasPorPacientes = from cita in citas
+                                            where cita.IdPaciente == codigoPaciente
+                                            select cita;
+
+                    return (View(citasPorPacientes));
+                }
+                catch (System.FormatException)
+                {
+                    ViewBag.CodigoPacienteError = true;
+                    return View(citas);
+                }
+
+               
             }
 
             if (radio == "Medico")
             {
-                int codigoMedico = int.Parse(Request.Form["medico"]);
+                try
+                {
+                    int codigoMedico = int.Parse(Request.Form["medico"]);
 
-                ViewBag.codigoMedico = codigoMedico;
+                    ViewBag.codigoMedico = codigoMedico;
 
-                var citasPorMedico = from cita in citas
-                                        where cita.IdMedico == codigoMedico
-                                        select cita;
+                    var citasPorMedico = from cita in citas
+                                         where cita.IdMedico == codigoMedico
+                                         select cita;
 
-                return (View(citasPorMedico));
+                    return (View(citasPorMedico));
+
+                }
+                catch (System.FormatException)
+                {
+                    ViewBag.CodigoMedicoError = true;
+                    return View(citas);
+                }
+
+             
 
             }
 
             if (radio == "Fecha")
             {
-                DateTime fechaCita = Convert.ToDateTime(Request.Form["fecha"]);
+                try
+                {
+                    DateTime fechaCita = Convert.ToDateTime(Request.Form["fecha"]);
 
-                ViewBag.fechaCita = fechaCita;
+                    ViewBag.fechaCita = fechaCita;
 
-                var citaPorFecha = from cita in citas
-                                     where cita.Fecha == fechaCita
-                                     select cita;
+                    var citaPorFecha = from cita in citas
+                                       where cita.Fecha == fechaCita
+                                       select cita;
 
-                return (View(citaPorFecha));
+                    return (View(citaPorFecha));
+
+                } catch(System.FormatException ex)
+                {
+                    ViewBag.DateError = true;
+
+                    return View(citas);
+                }
 
             }
 

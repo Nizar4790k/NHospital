@@ -11,7 +11,12 @@
     <input type="button" value="Export to PDF" onclick="exportToPdf();" />
 </p>
 <table class="table" id="tablon">
-    <tr>    
+    <tr>  
+        <th>
+            @Html.DisplayName("Codigo de cita")
+        </th>
+      
+
         <th>
             @Html.DisplayName("Medico")
         </th>
@@ -27,6 +32,11 @@
     @foreach (var item in Model)
     {
         <tr>
+
+             <td>
+                @Html.DisplayFor(modelItem => item.IdCita)
+            </td>
+
             <td>
                 @Html.DisplayFor(modelItem => item.Medico.Nombre)
             </td>
@@ -58,9 +68,14 @@
 
 
         @Html.RadioButton("radio", "Fecha", true, new { onclick = "activarFecha();" })
-
         @Html.Label("Fecha")
         @Html.TextBox("Fecha", "", new { id = "fecha", @class = "form-control" })
+
+        @if (ViewBag.DateError)
+        {
+            @Html.ValidationMessage("Fecha", "La fecha esta en formato incorrecto", new { @class = "text-danger" });
+        }
+
     </div>
 
     <br />
@@ -72,6 +87,11 @@
         @Html.RadioButton("radio", "Paciente", new { onClick = "activarPaciente();" })
         @Html.Label("Codigo de paciente")
         @Html.TextBox("paciente", "", new { disabled = true, id = "paciente", @class = "form-control" })
+      
+        @if (ViewBag.CodigoPacienteError)
+        {
+            @Html.ValidationMessage("paciente", "El valor introducido no es valido", new { @class = "text-danger" });
+        }
 
     </div>
 
@@ -81,6 +101,12 @@
         @Html.RadioButton("radio", "Medico", new { onClick = "activarMedico();" })
         @Html.Label("Codigo de Medico")
         @Html.TextBox("medico", "", new { disabled = true, id = "medico", @class = "form-control" })
+
+        @if (ViewBag.CodigoMedicoError)
+        {
+            @Html.ValidationMessage("medico", "El valor introducido no es valido", new { @class = "text-danger" });
+        }
+
 
     </div>
 
@@ -100,14 +126,14 @@
         var txtMedico = document.getElementById("medico");
         var txtFecha = document.getElementById("fecha");
 
-
+    
 
         var radio = "@ViewBag.radio";
 
 
         if (radio == "Paciente") {
             txtPaciente.value = "@ViewBag.codigoPaciente";
-            activarNombre();
+            activarPaciente();
         }
 
 
