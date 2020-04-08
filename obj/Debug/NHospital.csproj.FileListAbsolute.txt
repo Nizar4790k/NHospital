@@ -161,5 +161,4 @@ E:\Repo\NHospital\obj\Debug\NHospital.csproj.CopyComplete
 E:\Repo\NHospital\obj\Debug\NHospital.dll
 E:\Repo\NHospital\obj\Debug\NHospital.pdb
 E:\Repo\NHospital\obj\Debug\NHospital.csprojAssemblyReference.cache
-D:\Documentos\Visual Studio Projects\NHospital\obj\Debug\NHospital.csprojAssemblyReference.cache
 D:\Documentos\Visual Studio Projects\NHospital\bin\Rotativa.dll

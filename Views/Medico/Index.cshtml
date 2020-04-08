@@ -7,9 +7,11 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create") |
+    <input type="button" value="Export to PDF" onclick="exportToPdf();" />
+
 </p>
-<table class="table">
+<table class="table" id="tablon">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Nombre)
@@ -23,23 +25,120 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nombre)
-        </td>
-        <td>
-            <a href="/Exequatur/@item.Exequatur">Exequatur</a>
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Especialidad)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.IdMedico }) |
-            @Html.ActionLink("Details", "Details", new { id=item.IdMedico }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.IdMedico })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                <a href="/Exequatur/@item.Exequatur">Exequatur</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Especialidad)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.IdMedico }) |
+                @Html.ActionLink("Details", "Details", new { id = item.IdMedico }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.IdMedico })
+            </td>
+        </tr>
+    }
 
 </table>
+
+<br />
+<br />
+<br />
+
+@using (Html.BeginForm())
+{
+
+    <h2>Buscar por:</h2>
+
+    <br />
+
+    <div>
+
+
+        @Html.RadioButton("radio", "Nombre", true, new { onclick = "activarNombre();" })
+
+        @Html.Label("Nombre")
+        @Html.TextBox("nombre", "", new { id = "nombre", @class = "form-control" })
+    </div>
+
+    <br />
+
+
+    <div>
+
+
+        @Html.RadioButton("radio", "Especialidad", new { onClick = "activarEspecialidad();" })
+        @Html.Label("Especialidad")
+        @Html.TextBox("especialidad", "", new { disabled = true, id = "especialidad", @class = "form-control" })
+
+    </div>
+
+    <br />
+
+
+
+    <br />
+
+    <input type="submit" value="Consultar" />
+
+
+
+    <script>
+
+        var txtNombre = document.getElementById("nombre");
+        var txtEspecialidad = document.getElementById("especialidad");
+       
+
+
+        var radio = "@ViewBag.radio";
+
+
+        if (radio == "Nombre") {
+            txtNombre.value = "@ViewBag.nombreMedico";
+            activarNombre();
+        }
+
+
+
+        if (radio == "Especialidad") {
+            txtEspecialidad.value = "@ViewBag.especialidadMedico";
+            activarEspecialidad();
+        }
+
+
+
+        function activarNombre() {
+
+            txtNombre.disabled = false;
+           
+            txtEspecialidad .disabled = true;
+
+
+        }
+
+
+          function activarEspecialidad() {
+
+              txtNombre.disabled = true;
+          
+              txtEspecialidad .disabled = false;
+
+
+        }
+
+          
+
+
+
+
+
+
+    </script>
+
+}

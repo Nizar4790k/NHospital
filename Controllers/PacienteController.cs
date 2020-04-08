@@ -22,9 +22,7 @@ namespace NHospital.Controllers
         public ActionResult Index()
         {
 
-            ViewBag.textNombreActivo = false;
-            ViewBag.textCedulaActivo = false;
-            ViewBag.checkAseguradoActivo = false;
+           
             ViewBag.radio = "";
 
 
